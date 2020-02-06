@@ -38,30 +38,27 @@ public class ShowDevicesActivity extends AppCompatActivity {
         //User user = intent.getExtra("loggedInUser");
 
         initialize();
-        try {
-            getUserDevices(devices, json_user);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        fillArrayList(devices);
+
     }
 
     private void initialize() {
-        devices = new ArrayList<Device>();
+        devices = new ArrayList<>();
         listView = (ListView) findViewById(R.id.device_list);
         listViewAdapter = new DeviceAdapter(ShowDevicesActivity.this, devices);
+        getUserDevices(devices, json_user);
         listView.setAdapter(listViewAdapter);
     }
 
-    private void getUserDevices(ArrayList<Device> devices, String json_user) throws JSONException {
+    private void getUserDevices(final ArrayList<Device> devices, String json_user)  {
 
-        final JSONObject jsonUser = new JSONObject(json_user);
+        //final JSONObject jsonUser = new JSONObject(json_user);
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = new URL (getString(R.string.get_devices_url) + "/" +  jsonUser.get("id").toString());
+                    URL url = new URL (getString(R.string.get_devices_url));
+                    //URL url = new URL (getString(R.string.get_devices_url) + "/" +  jsonUser.get("id").toString());
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     try {
                         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -77,16 +74,22 @@ public class ShowDevicesActivity extends AppCompatActivity {
 
                             while (true) {
                                 JSONObject object = new JSONObject(stringBuilder.toString());
-                                JSONArray stepsArray = new JSONArray(object.get("people").toString());
+                                JSONArray stepsArray = new JSONArray(object.get("devices").toString());
+                                Log.i("stepsArray", stepsArray.toString());
 
                                 for (int i = 0 ; i < stepsArray.length() ; i++) {
                                     JSONObject obj = new JSONObject(stepsArray.get(i).toString());
-                                    //Log.i("user",obj.toString());
+                                    Log.i("obj",obj.toString());
                                     String name = obj.get("name").toString();
-                                    Integer id = (Integer) obj.get("id");
+                                    Log.i("Device Name: " ,name);
+                                    Boolean isOn = obj.getBoolean("isOn");
+                                    JSONObject automationObj = new JSONObject(obj.get("automation").toString());
+                                    String expiration = automationObj.get("expiration").toString();
+                                    Log.i("expiration: " , expiration);
+                                    Device device = new Device(name, R.drawable.radio_red, R.drawable.radio_green, isOn);
+                                    devices.add(device);
                                     //usersDictionary.put(id, name);
-                                    Log.i("Id: " , String.valueOf(id));
-                                    Log.i("Name: " ,name);
+                                    //Log.i("IsOn: " , String.valueOf(isOn));
 
                                 }
 
