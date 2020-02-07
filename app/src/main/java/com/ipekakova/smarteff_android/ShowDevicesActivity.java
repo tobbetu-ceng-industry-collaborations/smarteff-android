@@ -36,7 +36,6 @@ public class ShowDevicesActivity extends AppCompatActivity {
         json_user = intent.getStringExtra("LoggedInUser");
         Log.i("Json User Extra:", json_user);
         //User user = intent.getExtra("loggedInUser");
-
         initialize();
 
     }
@@ -74,19 +73,33 @@ public class ShowDevicesActivity extends AppCompatActivity {
 
                             while (true) {
                                 JSONObject object = new JSONObject(stringBuilder.toString());
-                                JSONArray stepsArray = new JSONArray(object.get("devices").toString());
-                                Log.i("stepsArray", stepsArray.toString());
+                                JSONArray devicesArray = new JSONArray(object.get("devices").toString());
+                                Log.i("devicesArray", devicesArray.toString());
 
-                                for (int i = 0 ; i < stepsArray.length() ; i++) {
-                                    JSONObject obj = new JSONObject(stepsArray.get(i).toString());
+                                for (int i = 0 ; i < devicesArray.length() ; i++) {
+                                    JSONObject obj = new JSONObject(devicesArray.get(i).toString());
                                     Log.i("obj",obj.toString());
                                     String name = obj.get("name").toString();
                                     Log.i("Device Name: " ,name);
                                     Boolean isOn = obj.getBoolean("isOn");
                                     JSONObject automationObj = new JSONObject(obj.get("automation").toString());
-                                    String expiration = automationObj.get("expiration").toString();
-                                    Log.i("expiration: " , expiration);
-                                    Device device = new Device(name, R.drawable.radio_red, R.drawable.radio_green, isOn);
+                                    Boolean suspended = automationObj.getBoolean("suspended");
+
+                                    int isOnView, automationView;
+                                    if (isOn){
+                                        isOnView = R.drawable.radio_green;
+                                    }else{
+                                        isOnView = R.drawable.radio_red;
+                                    }
+                                    if (suspended){ // Otomatik kapatma ertelendiyse
+                                        automationView = R.drawable.radio_red;
+                                        String expiration = automationObj.get("expiration").toString();
+                                        Log.i("expiration: " , expiration);
+                                    }
+                                    else{ //Automation active
+                                        automationView = R.drawable.radio_green;
+                                    }
+                                    Device device = new Device(name, isOnView, automationView, true);
                                     devices.add(device);
                                     //usersDictionary.put(id, name);
                                     //Log.i("IsOn: " , String.valueOf(isOn));
@@ -116,6 +129,9 @@ public class ShowDevicesActivity extends AppCompatActivity {
             Device device = new Device("Device", R.drawable.radio_red, R.drawable.radio_green, true);
             devices.add(device);
         }
+
+    }
+    private void parseJsonDevice(JSONArray devicesArray ){
 
     }
 }
