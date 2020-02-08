@@ -26,13 +26,18 @@
         android:layout_weight="0.20"
         android:layout_below="@+id/status" />
 
-    <Switch
-        android:id="@+id/enable_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.25"
+    <Button
+        android:id="@+id/enable_button"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/automation"
-        android:text="" />
-
+        android:layout_weight="0.25"
+        android:clickable="true"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:textColor="#191919"
+        android:textSize="10sp" />
 
 </LinearLayout>

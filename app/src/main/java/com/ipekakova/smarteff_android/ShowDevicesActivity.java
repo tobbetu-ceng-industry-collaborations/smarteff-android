@@ -86,6 +86,7 @@ public class ShowDevicesActivity extends AppCompatActivity {
                                     Boolean suspended = automationObj.getBoolean("suspended");
 
                                     int isOnView, automationView;
+                                    String buttonText;
                                     if (isOn){
                                         isOnView = R.drawable.radio_green;
                                     }else{
@@ -93,13 +94,15 @@ public class ShowDevicesActivity extends AppCompatActivity {
                                     }
                                     if (suspended){ // Otomatik kapatma ertelendiyse
                                         automationView = R.drawable.radio_red;
+                                        buttonText = "Enable";
                                         String expiration = automationObj.get("expiration").toString();
                                         Log.i("expiration: " , expiration);
                                     }
                                     else{ //Automation active
                                         automationView = R.drawable.radio_green;
+                                        buttonText = "Suspend";
                                     }
-                                    Device device = new Device(name, isOnView, automationView, true);
+                                    Device device = new Device(name, isOnView, automationView, buttonText);
                                     devices.add(device);
                                     //usersDictionary.put(id, name);
                                     //Log.i("IsOn: " , String.valueOf(isOn));
@@ -126,7 +129,7 @@ public class ShowDevicesActivity extends AppCompatActivity {
 
     private void fillArrayList(ArrayList<Device> devices) {
         for (int index = 0; index < 20; index++) {
-            Device device = new Device("Device", R.drawable.radio_red, R.drawable.radio_green, true);
+            Device device = new Device("Device", R.drawable.radio_red, R.drawable.radio_green, "Button");
             devices.add(device);
         }
 

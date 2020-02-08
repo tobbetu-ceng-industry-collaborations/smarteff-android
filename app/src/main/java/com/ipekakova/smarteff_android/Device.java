@@ -8,14 +8,16 @@ public class Device {
     private String id;
     private int deviceIsOn;
     private int automatedShutdownIsOn;
-    private boolean enableShutDown;
+    private String suspendOrEnable;
+    //private boolean enableShutDown;
 
 
-    public Device(String id, int isOn, int automatedShutdownIsOn, boolean enableShutDown) {
+    public Device(String id, int isOn, int automatedShutdownIsOn, String suspendOrEnable) {
         this.id = id;
         this.deviceIsOn = isOn;
         this.automatedShutdownIsOn = automatedShutdownIsOn;
-        this.enableShutDown = enableShutDown;
+        //this.enableShutDown = enableShutDown;
+        this.suspendOrEnable = suspendOrEnable;
     }
     public String getId(){
         return id;
@@ -26,8 +28,6 @@ public class Device {
     public int getAutomation(){
         return automatedShutdownIsOn;
     }
-    public boolean getEnableShutdown(){
-        return enableShutDown;
-    }
+    public  String getSuspendOrEnable(){ return suspendOrEnable; }
 
 }

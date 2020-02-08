@@ -1,6 +1,7 @@
 package com.ipekakova.smarteff_android;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -13,6 +14,6 @@ public class ViewHolder {
     TextView deviceName;
     ImageView status;
     ImageView automation;
-    Switch enableShutDown;
-
+    //Switch enableShutDown;
+    Button button;
 }

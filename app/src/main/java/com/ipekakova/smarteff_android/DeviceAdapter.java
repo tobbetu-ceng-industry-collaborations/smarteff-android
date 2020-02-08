@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -44,7 +45,8 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
             holder.status = (ImageView) convertView.findViewById(R.id.status);
             holder.deviceName = (TextView) convertView.findViewById(R.id.device_name);
             holder.automation = (ImageView) convertView.findViewById(R.id.automation);
-            holder.enableShutDown = (Switch) convertView.findViewById(R.id.enable_switch);
+            holder.button = (Button) convertView.findViewById(R.id.enable_button);
+            //holder.enableShutDown = (Switch) convertView.findViewById(R.id.enable_switch);
             convertView.setTag(holder);
 
         }
@@ -58,9 +60,8 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
             holder.deviceName.setText(device.getId());
             holder.status.setImageResource(device.getStatus());
             holder.automation.setImageResource(device.getAutomation());
-            holder.enableShutDown.setEnabled(device.getEnableShutdown());
-
-            //holder.personAddressLabel.setText(device.getAutomation());
+            //holder.enableShutDown.setEnabled(device.getEnableShutdown());
+            holder.button.setText(device.getSuspendOrEnable());
 
         }
         return convertView;
