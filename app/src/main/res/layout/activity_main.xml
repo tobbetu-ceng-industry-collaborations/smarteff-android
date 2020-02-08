@@ -8,35 +8,47 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_black_design_"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="250dp"
+            android:id="@+id/image_view"
+            android:layout_width="400dp"
             android:layout_height="250dp"
-            android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/enerji" />
+            android:layout_marginTop="47dp"
+            android:src="@drawable/woman_earth"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <AutoCompleteTextView
             android:id="@+id/text_view"
-            android:layout_width="fill_parent"
+            style="@style/formDropDown"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/imageView" />
-
+            android:layout_marginTop="44dp"
+            android:hint="Select username"
+            android:textColorHint="@color/hint"
+            android:textAlignment="center"
+            android:textColor="#fffffe"
+            android:textSize="8pt"
+            android:layout_below="@+id/image_view"
+            android:layout_centerHorizontal="true" />
+        <!--
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:textSize="14pt"
-            android:textColor="#FF8B1500"
-            android:gravity="center"/>
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:textColor="@color/colorMenu"
+            android:textSize="15pt" />
 
-
+-->
     </RelativeLayout>
 
 

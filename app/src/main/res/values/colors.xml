@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#babdbd</color>
+    <color name="colorPrimary">#adb0b0</color>
     <color name="colorPrimaryDark">#5e5d5d</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#dbcea6</color>
     <color name="colorText">#4c4f52</color>
+    <color name="colorMenu">#3a883a</color>
+    <color name="colorButton">#5f7160</color>
+    <color name="colorBaslik">#3d6e88</color>
+    <color name="hint">#d1fffffe</color>
+
+
 </resources>
