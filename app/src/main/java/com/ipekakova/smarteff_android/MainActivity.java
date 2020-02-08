@@ -8,6 +8,7 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Integer> userIds = new ArrayList<>();
 
     ArrayAdapter<String> adapter;
+    ArrayAdapter<String> tv_adapter;
     Spinner usersSpinner;
+    AutoCompleteTextView autoCompleteTextView;
     User loggedInUser;
     Map<Integer, String> usersDictionary;
     @Override
@@ -48,18 +51,52 @@ public class MainActivity extends AppCompatActivity {
         users = sendGet();
         setContentView(R.layout.activity_main);
 
-        //final AutoCompleteTextView usersSpinner = (AutoCompleteTextView) findViewById(R.id.text_view);
-        usersSpinner = (Spinner) findViewById(R.id.spinner);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.text_view);
+        //usersSpinner = (Spinner) findViewById(R.id.spinner);
         //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         //StrictMode.setThreadPolicy(policy);
         Log.i("LIST", users.toString());
 
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,users);
+        tv_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,users);
+        autoCompleteTextView.setAdapter(tv_adapter);
+        autoCompleteTextView.setOnItemClickListener((new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String user_name = parent.getItemAtPosition(position).toString();
+                int user_id = (int) userIds.get(position);
+                //usersDictionary.get(user_id);
+                Log.i("Selected item : ",user_name);
+                Log.i("Selected item : ", String.valueOf(user_id));
+                loggedInUser = new User(user_id, user_name);
+                JSONObject user_json =new JSONObject();
+                try {
+                    user_json.put("id",user_id);
+                    user_json.put("name",user_name);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("SELECTED", user_json.toString());
+                LoginIntent(user_json.toString());
+            }
+        }));
+
+        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                autoCompleteTextView.showDropDown();
+                return false;
+            }
+        });
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Allows the adapter to show the data inside the spinner
-        usersSpinner.setAdapter(adapter);
 
+        /*
+        usersSpinner.setAdapter(adapter);
         usersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -90,30 +127,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
+        */
+    }   // END OF ONCREATE() METHOD
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.users_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.search_icon);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Search here");
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-          @Override
-          public boolean onQueryTextSubmit(String query) {
-               return false;
-               }
-
-          @Override
-          public boolean onQueryTextChange(String newText) {
-              adapter.getFilter().filter((newText));
-              return true;
-               }
-          }
-        );
-        return super.onCreateOptionsMenu(menu);
-    }
 
     public ArrayList<String> sendGet(){
         usersDictionary = new HashMap<Integer, String>();
