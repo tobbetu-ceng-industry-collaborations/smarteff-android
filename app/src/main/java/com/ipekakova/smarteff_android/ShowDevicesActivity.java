@@ -23,40 +23,38 @@ import java.util.HashMap;
  */
 
 public class ShowDevicesActivity extends AppCompatActivity {
-    private ArrayList<Device> devices;
+    //private ArrayList<Device> devices;
     private ListView listView;
     private DeviceAdapter listViewAdapter;
-    String json_user = null;
+    User currentUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_devices);
         Intent intent = getIntent();
-        json_user = intent.getStringExtra("LoggedInUser");
-        Log.i("Json User Extra:", json_user);
+        currentUser = (User) intent.getExtras().getSerializable("logged_in_user");
+        //currentUser = (User) intent.getSerializableExtra("logged_in_user");
+        Log.i("Logged in user infos:", currentUser.toString());
         //User user = intent.getExtra("loggedInUser");
         initialize();
 
     }
 
     private void initialize() {
-        devices = new ArrayList<>();
         listView = (ListView) findViewById(R.id.device_list);
-        listViewAdapter = new DeviceAdapter(ShowDevicesActivity.this, devices);
-        getUserDevices(devices, json_user);
+        currentUser.setDevices(fillUserDevices());
+        listViewAdapter = new DeviceAdapter(ShowDevicesActivity.this, currentUser.getDevices());
         listView.setAdapter(listViewAdapter);
     }
 
-    private void getUserDevices(final ArrayList<Device> devices, String json_user)  {
-
-        //final JSONObject jsonUser = new JSONObject(json_user);
-
+    private ArrayList<Device> fillUserDevices()  {
+        final ArrayList<Device> devices = new ArrayList<Device>();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = new URL (getString(R.string.get_devices_url));
+                    URL url = new URL (getString(R.string.get_devices_url) );
                     //URL url = new URL (getString(R.string.get_devices_url) + "/" +  jsonUser.get("id").toString());
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     try {
@@ -106,7 +104,6 @@ public class ShowDevicesActivity extends AppCompatActivity {
                                     devices.add(device);
                                     //usersDictionary.put(id, name);
                                     //Log.i("IsOn: " , String.valueOf(isOn));
-
                                 }
 
                                 break;
@@ -125,6 +122,7 @@ public class ShowDevicesActivity extends AppCompatActivity {
         });
 
         thread.start();
+        return devices;
     }
 
     private void fillArrayList(ArrayList<Device> devices) {
@@ -132,9 +130,5 @@ public class ShowDevicesActivity extends AppCompatActivity {
             Device device = new Device("Device", R.drawable.radio_red, R.drawable.radio_green, "Button");
             devices.add(device);
         }
-
-    }
-    private void parseJsonDevice(JSONArray devicesArray ){
-
     }
 }

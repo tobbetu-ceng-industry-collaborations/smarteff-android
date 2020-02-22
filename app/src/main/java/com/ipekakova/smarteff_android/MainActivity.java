@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> users = new ArrayList<>();
     ArrayList<Integer> userIds = new ArrayList<>();
-
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> tv_adapter;
     Spinner usersSpinner;
@@ -80,7 +79,9 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Log.d("SELECTED", user_json.toString());
-                LoginIntent(user_json.toString());
+                //LoginIntent(user_json.toString());
+                LoginIntent(loggedInUser);
+
             }
         }));
 
@@ -187,11 +188,14 @@ public class MainActivity extends AppCompatActivity {
         return users;
     }
 
-    public void LoginIntent(String loggedInUser) {
+    public void LoginIntent(User loggedInUser) {
         Intent loginIntent = new Intent(getApplicationContext(), ShowDevicesActivity.class);
-        loginIntent.putExtra("LoggedInUser",  loggedInUser);
+
+        Bundle userBundle = new Bundle();
+        userBundle.putSerializable("logged_in_user",loggedInUser);
+        loginIntent.putExtras(userBundle);
+
         startActivity(loginIntent);
     }
-
 
 }
