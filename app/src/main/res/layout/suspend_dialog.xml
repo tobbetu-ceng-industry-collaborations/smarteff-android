@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#092802"
+    android:background="#a2a2a1"
     android:orientation="vertical"
     android:padding="5dp">
 
-    <ImageView
+    <TimePicker
         android:id="@+id/imageview_resim"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="5dp" />
 
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Custom Alert Dialog Penceresi"
+        android:text=""
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
