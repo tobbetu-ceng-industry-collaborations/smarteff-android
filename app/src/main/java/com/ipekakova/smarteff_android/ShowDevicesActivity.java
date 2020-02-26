@@ -1,11 +1,17 @@
 package com.ipekakova.smarteff_android;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,20 +39,34 @@ public class ShowDevicesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_devices);
         Intent intent = getIntent();
+
         currentUser = (User) intent.getExtras().getSerializable("logged_in_user");
+
         //currentUser = (User) intent.getSerializableExtra("logged_in_user");
         Log.i("Logged in user infos:", currentUser.toString());
         //User user = intent.getExtra("loggedInUser");
         initialize();
+        Log.i("oncreate-devices",currentUser.getDevices().toString());
 
     }
 
     private void initialize() {
         listView = (ListView) findViewById(R.id.device_list);
         currentUser.setDevices(fillUserDevices());
+        Log.i("initialize-devices",currentUser.getDevices().toString());
         listViewAdapter = new DeviceAdapter(ShowDevicesActivity.this, currentUser.getDevices());
         listView.setAdapter(listViewAdapter);
     }
+
+        //TODO
+        @Override
+        protected void onResume() {
+            super.onResume();
+            currentUser.setDevices(listViewAdapter.devices);
+            //listViewAdapter.notifyDataSetChanged();
+            Log.i("onresume-devices", currentUser.getDevices().toString());
+        }
+
 
     private ArrayList<Device> fillUserDevices()  {
         final ArrayList<Device> devices = new ArrayList<Device>();

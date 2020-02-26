@@ -1,5 +1,6 @@
 package com.ipekakova.smarteff_android;
 
+//Data holder pattern that holds a reference to the data inside of this list item in that way you don't have to constantly keep calling findViewById()
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,4 +17,5 @@ public class ViewHolder {
     ImageView automation;
     //Switch enableShutDown;
     Button button;
+
 }
