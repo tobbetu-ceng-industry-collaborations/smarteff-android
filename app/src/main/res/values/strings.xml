@@ -2,5 +2,7 @@
     <string name="app_name">Smart Eff</string>
     <string name="get_users_url">http://10.0.2.2:5000/ListUsers</string>
     <string name="get_devices_url">http://10.0.2.2:5000/ListDevices</string>
+    <string name="enable_automation_url">http://10.0.2.2:5000/EnableAutomation</string>
+    <string name="suspend_automation_url">http://10.0.2.2:5000/SuspendAutomation</string>
 
 </resources>

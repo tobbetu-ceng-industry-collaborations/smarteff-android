@@ -5,21 +5,21 @@ package com.ipekakova.smarteff_android;
  */
 
 public class Device {
-    private String id;
+    private int id;
     private int deviceIsOn;
     private int automation;
     private String suspendOrEnable;
     //private boolean enableShutDown;
 
 
-    public Device(String id, int isOn, int automation, String suspendOrEnable) {
+    public Device(int id, int isOn, int automation, String suspendOrEnable) {
         this.id = id;
         this.deviceIsOn = isOn;
         this.automation = automation;
         //this.enableShutDown = enableShutDown;
         this.suspendOrEnable = suspendOrEnable;
     }
-    public String getId(){
+    public int getId(){
         return id;
     }
     public int getStatus(){

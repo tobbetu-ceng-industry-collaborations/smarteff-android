@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -26,18 +25,22 @@ import java.util.Calendar;
  */
 
 public class DeviceAdapter extends ArrayAdapter<Device> {
+    private HttpRequest http;
     private final LayoutInflater inflater;
     private final Context context;
     //private idi deneme icin değistirdim.
     public ViewHolder holder;
+    private User currentUser;
     //private final ArrayList<Device> devices;
-
     public ArrayList<Device> devices;
 
-    public DeviceAdapter(Context context, ArrayList<Device> devices) {
+
+    public DeviceAdapter(Context context, ArrayList<Device> devices, User currentUser) {
         super(context,0, devices);
         this.context = context;
         this.devices = devices;
+        this.currentUser = currentUser;
+        http = new HttpRequest(context);
         inflater = LayoutInflater.from(context);
     }
     public ArrayList<Device> getDevices(){
@@ -67,6 +70,9 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
                         device.setSuspendOrEnable("Suspend");
                         holder.automation.setImageResource(device.getAutomation());
                         holder.button.setText(device.getSuspendOrEnable());
+
+                        //Http Post Request for sending enable automation to the server.
+                        http.sendPostForEnable(currentUser.getId(), device.getId());
                         notifyDataSetChanged();
                         Toast.makeText(context, "Enabled shutdown", Toast.LENGTH_SHORT).show();
                     }
@@ -91,7 +97,12 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
                                 device.setSuspendOrEnable("Enable");
                                 device.setAutomation(R.drawable.radio_red);
                                 Toast.makeText(context, "Suspended automated shutdown", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(context, timePicker.getHour() +": "+ timePicker.getMinute(), Toast.LENGTH_SHORT).show();
+                                int hour = timePicker.getHour();
+                                int minute = timePicker.getMinute();
+                                Toast.makeText(context, hour +": "+ minute, Toast.LENGTH_SHORT).show();
+
+                                //Http Post Request for sending suspension time infos to the server.
+                                http.sendPostForSuspend(currentUser.getId(),device.getId(), hour, minute);
                                 holder.automation.setImageResource(device.getAutomation());
                                 holder.button.setText(device.getSuspendOrEnable());
                                 notifyDataSetChanged();
@@ -124,7 +135,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
 
         final Device device = devices.get(position);
         if(device != null){
-            holder.deviceName.setText(device.getId());
+            holder.deviceName.setText("Device:" + device.getId());
             holder.status.setImageResource(device.getStatus());
             holder.automation.setImageResource(device.getAutomation());
             //holder.enableShutDown.setEnabled(device.getEnableShutdown());

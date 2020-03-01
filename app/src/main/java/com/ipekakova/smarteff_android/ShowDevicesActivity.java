@@ -54,7 +54,7 @@ public class ShowDevicesActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.device_list);
         currentUser.setDevices(fillUserDevices());
         Log.i("initialize-devices",currentUser.getDevices().toString());
-        listViewAdapter = new DeviceAdapter(ShowDevicesActivity.this, currentUser.getDevices());
+        listViewAdapter = new DeviceAdapter(ShowDevicesActivity.this, currentUser.getDevices(),currentUser);
         listView.setAdapter(listViewAdapter);
     }
 
@@ -97,8 +97,10 @@ public class ShowDevicesActivity extends AppCompatActivity {
                                 for (int i = 0 ; i < devicesArray.length() ; i++) {
                                     JSONObject obj = new JSONObject(devicesArray.get(i).toString());
                                     Log.i("obj",obj.toString());
-                                    String name = obj.get("name").toString();
-                                    Log.i("Device Name: " ,name);
+                                    //String name = obj.get("name").toString();
+                                    int name = obj.getInt("name");
+                                    String devicename = "Device:" + name;
+                                    Log.i("Device Name: " ,devicename);
                                     Boolean isOn = obj.getBoolean("isOn");
                                     JSONObject automationObj = new JSONObject(obj.get("automation").toString());
                                     Boolean suspended = automationObj.getBoolean("suspended");
@@ -147,7 +149,7 @@ public class ShowDevicesActivity extends AppCompatActivity {
 
     private void fillArrayList(ArrayList<Device> devices) {
         for (int index = 0; index < 20; index++) {
-            Device device = new Device("Device", R.drawable.radio_red, R.drawable.radio_green, "Button");
+            Device device = new Device(1, R.drawable.radio_red, R.drawable.radio_green, "Button");
             devices.add(device);
         }
     }
