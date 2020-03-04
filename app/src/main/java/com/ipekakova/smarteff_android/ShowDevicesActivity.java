@@ -4,11 +4,16 @@ import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,7 +37,7 @@ import java.util.concurrent.ExecutionException;
  * Created by User on 2.02.2020.
  */
 
-public class ShowDevicesActivity extends AppCompatActivity {
+public class ShowDevicesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //private ArrayList<Device> devices;
     private ListView listView;
     private DeviceAdapter listViewAdapter;
@@ -42,14 +47,21 @@ public class ShowDevicesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_devices);
+        //setContentView(R.layout.activity_all_devices);
+        setContentView(R.layout.activity_nav_main);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.nav_username_tv);
+
         Intent intent = getIntent();
         http = new HttpRequest(this);
         currentUser = (User) intent.getExtras().getSerializable("logged_in_user");
+        navUsername.setText("Logged in as: "+ currentUser.getName().toUpperCase());
 
-        //currentUser = (User) intent.getSerializableExtra("logged_in_user");
         Log.i("Logged in user infos:", currentUser.toString());
-        //User user = intent.getExtra("loggedInUser");
         initialize();
         Log.i("oncreate-devices",currentUser.getDevices().toString());
 
@@ -61,6 +73,9 @@ public class ShowDevicesActivity extends AppCompatActivity {
         //Log.i("initialize-devices",currentUser.getDevices().toString());
         listViewAdapter = new DeviceAdapter(ShowDevicesActivity.this, currentUser.getDevices(),currentUser);
         listView.setAdapter(listViewAdapter);
+        Log.i("currentUser", String.valueOf(currentUser.getClass()));
+        //usernameTv.setText("Logged in as: "+currentUser.getName());
+
     }
 
         //TODO
@@ -133,4 +148,21 @@ private ArrayList<Device> getUserDevices(){
     return devices;
 }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_devices) {
+            // Handle the camera action
+        } else if (id == R.id.nav_suspensions) {
+
+        }else{
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
