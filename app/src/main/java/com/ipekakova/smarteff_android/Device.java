@@ -1,14 +1,14 @@
 package com.ipekakova.smarteff_android;
 
 /**
- * Created by User on 2.02.2020.
+ * Created by User on 3.03.2020.
  */
 
-public class Device {
-    private int id;
-    private int deviceIsOn;
-    private int automation;
-    private String suspendOrEnable;
+public abstract class Device {
+    public int id ;
+    public int deviceIsOn;
+    public int automation;
+    public String suspendOrEnable;
     //private boolean enableShutDown;
 
 
@@ -42,16 +42,10 @@ public class Device {
     @Override
     public String toString() {
         return "Device{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", deviceIsOn=" + deviceIsOn +
                 ", automation=" + automation +
                 ", suspendOrEnable='" + suspendOrEnable + '\'' +
                 '}';
     }
-
-    /*
-    private class SuspensionRequest{
-        private
-    }
-    */
 }

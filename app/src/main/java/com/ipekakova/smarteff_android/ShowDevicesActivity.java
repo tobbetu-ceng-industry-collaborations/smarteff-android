@@ -1,9 +1,12 @@
 package com.ipekakova.smarteff_android;
 
 import android.app.Dialog;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +58,7 @@ public class ShowDevicesActivity extends AppCompatActivity {
     private void initialize() {
         listView = (ListView) findViewById(R.id.device_list);
         currentUser.setDevices(getUserDevices());
-        Log.i("initialize-devices",currentUser.getDevices().toString());
+        //Log.i("initialize-devices",currentUser.getDevices().toString());
         listViewAdapter = new DeviceAdapter(ShowDevicesActivity.this, currentUser.getDevices(),currentUser);
         listView.setAdapter(listViewAdapter);
     }
@@ -66,9 +69,8 @@ public class ShowDevicesActivity extends AppCompatActivity {
             super.onResume();
             currentUser.setDevices(listViewAdapter.devices);
             //listViewAdapter.notifyDataSetChanged();
-            Log.i("onresume-devices", currentUser.getDevices().toString());
+            //Log.i("onresume-devices", currentUser.getDevices().toString());
         }
-
 
 private ArrayList<Device> getUserDevices(){
     ArrayList<Device> devices = new ArrayList<Device>();
@@ -102,14 +104,18 @@ private ArrayList<Device> getUserDevices(){
                         automationView = R.drawable.radio_red;
                         buttonText = "Enable";
                         String expiration = automationObj.get("expiration").toString();
+                        Device suspendendDevice = new SuspendendDevice(name, isOnView, automationView, buttonText, expiration);
+                        devices.add(suspendendDevice);
                         Log.i("expiration: " , expiration);
                     }
                     else{ //Automation active
                         automationView = R.drawable.radio_green;
                         buttonText = "Suspend";
+                        Device automatedDevice = new AutomatedDevice(name, isOnView, automationView, buttonText);
+                        devices.add(automatedDevice);
                     }
-                    Device device = new Device(name, isOnView, automationView, buttonText);
-                    devices.add(device);
+                    //Device device = new Device(name, isOnView, automationView, buttonText);
+                    //devices.add(device);
                     //usersDictionary.put(id, name);
                     //Log.i("IsOn: " , String.valueOf(isOn));
                 }
@@ -126,10 +132,5 @@ private ArrayList<Device> getUserDevices(){
     }
     return devices;
 }
-    private void fillArrayList(ArrayList<Device> devices) {
-        for (int index = 0; index < 20; index++) {
-            Device device = new Device(1, R.drawable.radio_red, R.drawable.radio_green, "Button");
-            devices.add(device);
-        }
-    }
+
 }
