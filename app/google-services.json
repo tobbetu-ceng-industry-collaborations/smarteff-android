@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "616775201588",
+    "firebase_url": "https://smarteff-e4fef.firebaseio.com",
+    "project_id": "smarteff-e4fef",
+    "storage_bucket": "smarteff-e4fef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616775201588:android:46c232dd6c652951bb2b61",
+        "android_client_info": {
+          "package_name": "com.ipekakova.smarteff_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616775201588-9p6gbc4vqj0s5a9p4qoehnafkgucrfva.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtpz-oWDSAOui0gxFgnbfuRKZS7VHzh0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616775201588-9p6gbc4vqj0s5a9p4qoehnafkgucrfva.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
