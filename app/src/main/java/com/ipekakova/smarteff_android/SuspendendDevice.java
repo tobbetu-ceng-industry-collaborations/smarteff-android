@@ -11,6 +11,9 @@ public class SuspendendDevice extends Device {
     public String expirationYear;
     public String expirationTime;
     public String expiration;
+    public int day;
+    public int month;
+    public int year;
 
     public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,String expiration) {
         super(id, isOn, automation, suspendOrEnable);
@@ -21,7 +24,12 @@ public class SuspendendDevice extends Device {
         expirationTime = dates[2];
         expirationYear = dates[3];
     }
-
+    public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,int day, int month, int year) {
+        super(id, isOn, automation, suspendOrEnable);
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
     @Override
     public String toString() {
         return "SuspendendDevice{" +

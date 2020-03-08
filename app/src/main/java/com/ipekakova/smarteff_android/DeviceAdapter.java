@@ -13,12 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by User on 2.02.2020.
@@ -82,9 +84,70 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
                         Toast.makeText(context, "Enabled shutdown", Toast.LENGTH_SHORT).show();
                     }
                     else {
+                        final Dialog dateDialog = new Dialog(context);
+                        dateDialog.setContentView(R.layout.suspend_datepicker_dialog);
+                        Button  saatSec = (Button)dateDialog.findViewById(R.id.button_time_sec);
+                        Button btnDateIptal = (Button) dateDialog.findViewById(R.id.button_date_iptal);
+                        final DatePicker datePicker = (DatePicker) dateDialog.findViewById(R.id.datepicker);
+                        saatSec.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                final int year = datePicker.getYear();
+                                final int month = datePicker.getMonth();
+                                final int day = datePicker.getDayOfMonth();
+                                final Dialog timeDialog = new Dialog(context);
+                                timeDialog.setContentView(R.layout.suspend_timepicker_dialog);
+
+                                Button kaydet = (Button) timeDialog.findViewById(R.id.button_kaydet);
+                                Button iptal = (Button) timeDialog.findViewById(R.id.button_iptal);
+                                final TimePicker timePicker = (TimePicker) timeDialog.findViewById(R.id.time_picker);
+                                kaydet.setOnClickListener(new View.OnClickListener() {
+                                    @RequiresApi(api = Build.VERSION_CODES.M)
+                                    @Override
+                                    public void onClick(View view) {
+                                        Log.i("red", "Clicked on SUSPEND button");
+                                        // Automation is on ise kapatti.
+                                        device.setSuspendOrEnable("Enable");
+                                        device.setAutomation(R.drawable.radio_red);
+                                        Toast.makeText(context, "Suspended automated shutdown", Toast.LENGTH_SHORT).show();
+                                        int hour = timePicker.getHour();
+                                        int minute = timePicker.getMinute();
+                                        Toast.makeText(context, "Suspendend until: "+ day+"/"+ month+"/" + year +"  "+ hour +": "+ minute, Toast.LENGTH_SHORT).show();
+                                        device = new SuspendendDevice(device.getId(),device.getStatus(),device.getAutomation(), device.getSuspendOrEnable(), day, month,year);
+                                        //Http Post Request for sending suspension time infos to the server.
+
+                                        Log.i("After change:", String.valueOf(device.getClass()));
+                                        http.sendPostForSuspend(currentUser.getId(),device.getId(), hour, minute);
+                                        holder.automation.setImageResource(device.getAutomation());
+                                        holder.button.setText(device.getSuspendOrEnable());
+                                        notifyDataSetChanged();
+                                        timeDialog.dismiss();
+                                        dateDialog.dismiss();
+                                    }
+                                });
+                                iptal.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        timeDialog.dismiss();
+                                    }
+                                });
+
+                                timeDialog.show();
+                            }
+                        });
+
+                        btnDateIptal.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dateDialog.dismiss();
+                            }
+                        });
+                        dateDialog.show();
+
+                        /*
                         Log.i("Before change:", String.valueOf(device.getClass()));
                         final Dialog dialog = new Dialog(context);
-                        dialog.setContentView(R.layout.suspend_dialog);
+                        dialog.setContentView(R.layout.suspend_timepicker_dialog);
 
                         // custom dialog elemanlarını tanımla - text, image ve button
                         Button btnKaydet = (Button) dialog.findViewById(R.id.button_kaydet);
@@ -132,6 +195,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
                         // Automation is on ise kapatti.
                         device.setSuspendOrEnable("Enable");
                         device.setAutomation(R.drawable.radio_red);
+                        */
                     }
 
                 }
@@ -145,7 +209,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
 
         final Device device = devices.get(position);
         if(device != null){
-            holder.deviceName.setText("Device:" + device.getId());
+            holder.deviceName.setText("D:" + device.getId());
             holder.status.setImageResource(device.getStatus());
             holder.automation.setImageResource(device.getAutomation());
             //holder.enableShutDown.setEnabled(device.getEnableShutdown());
@@ -171,6 +235,9 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
         return devices.get(position).hashCode();
     }
 
+    public void setDevices(ArrayList<Device> devices) {
+        this.devices = devices;
+    }
 
     private static class DeviceViewHolder{
         TextView deviceName;
@@ -179,6 +246,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
         //Switch enableShutDown;
         Button button;
     }
+
 
 }
 
