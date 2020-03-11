@@ -16,11 +16,15 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowDevicesActivity" />
+        <activity android:name=".ShowDevicesActivity"
+            />
+        <activity android:name=".ShowNotificationActivity"
+            android:label="Suspend Shutdown!"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            />
         <activity
             android:name=".ScheduledShutdownsActivity"
             android:label="@string/title_activity_scheduled_shutdowns"
@@ -47,6 +51,8 @@
             </intent-filter>
         </service>
         <!-- [END firebase_iid_service] -->
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more. -->
     </application>
 
 </manifest>
