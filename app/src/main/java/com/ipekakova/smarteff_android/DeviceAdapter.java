@@ -117,7 +117,8 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
                                         //Http Post Request for sending suspension time infos to the server.
 
                                         Log.i("After change:", String.valueOf(device.getClass()));
-                                        http.sendPostForSuspend(currentUser.getId(),device.getId(), hour, minute);
+                                        // Post request for suspension
+                                        http.sendPostForSuspend(currentUser.getId(),device.getId(),year,month,day, hour, minute);
                                         holder.automation.setImageResource(device.getAutomation());
                                         holder.button.setText(device.getSuspendOrEnable());
                                         notifyDataSetChanged();

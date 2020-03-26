@@ -5,6 +5,7 @@ package com.ipekakova.smarteff_android;
  */
 
 public abstract class Device {
+    public String deviceName;
     public int id ;
     public int deviceIsOn;
     public int automation;
@@ -19,6 +20,8 @@ public abstract class Device {
         //this.enableShutDown = enableShutDown;
         this.suspendOrEnable = suspendOrEnable;
     }
+
+    public String getDeviceName(){ return deviceName; }
     public int getId(){
         return id;
     }
@@ -29,6 +32,10 @@ public abstract class Device {
         return automation;
     }
     public  String getSuspendOrEnable(){ return suspendOrEnable; }
+
+    public void setDeviceName(String deviceName){
+        deviceName = this.deviceName;
+    }
     public void setDeviceIsOn(int isOn){
         deviceIsOn = isOn;
     }

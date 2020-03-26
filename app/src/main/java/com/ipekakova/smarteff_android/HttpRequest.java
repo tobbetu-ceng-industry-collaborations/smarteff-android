@@ -31,60 +31,9 @@ public class HttpRequest extends AsyncTask{
         context = ctx;
     }
 
-    /*
-        public HashMap<Integer, String> sendGetForUsers(){
-            final HashMap<Integer,String> users = new HashMap<Integer, String>();
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        URL url = new URL (context.getString(R.string.get_users_url));
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        try {
-                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                            StringBuilder stringBuilder = new StringBuilder();
-                            String line;
-                            while ((line = bufferedReader.readLine()) != null) {
-                                stringBuilder.append(line).append("\n");
-                            }
-                            bufferedReader.close();
-                            try {
-                                while (true) {
-                                    JSONObject object = new JSONObject(stringBuilder.toString());
-                                    JSONArray usersArray = new JSONArray(object.get("people").toString());
+    //http.sendPostForSuspend(currentUser.getId(),device.getId(),year,month,day, hour, minute);
 
-                                    for (int i = 0 ; i < usersArray.length() ; i++) {
-                                        JSONObject obj = new JSONObject(usersArray.get(i).toString());
-                                        //Log.i("user",obj.toString());
-                                        String name = obj.get("name").toString();
-                                        Integer id = (Integer) obj.get("id");
-                                        //usersDictionary.put(id, name);
-                                        Log.i("Id: " , String.valueOf(id));
-                                        Log.i("Name: " ,name);
-                                        users.put(id, name);
-                                    }
-
-                                    break;
-                                }
-                            } catch (JSONException e) {
-                                System.out.println(e.getMessage());
-                            }
-                        } finally {
-                            conn.disconnect();
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            thread.start();
-            Log.i("hashmap in getRequest", users.toString());
-            return users;
-        }
-    */
-    public void sendPostForSuspend(final int user_id, final int device_id, final int hour, final int minute) {
+    public void sendPostForSuspend(final int user_id, final int device_id, final int year, final int month, final int day, final int hour, final int minute) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -98,10 +47,10 @@ public class HttpRequest extends AsyncTask{
                     conn.setDoInput(true);
 
                     JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("PersonId",user_id);
-                    jsonParam.put("DeviceId",device_id);
-                    jsonParam.put("Until",""+ hour +":" +minute);
-
+                    jsonParam.put("personid",user_id);
+                    jsonParam.put("deviceid",device_id);
+                    // “until”:”2020-01-29-10-30-00”
+                    jsonParam.put("until", year+ "-"+ month + "-"+ day+ "-"+ hour + "-"+minute+ "-"+ "00");
 
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -126,7 +75,7 @@ public class HttpRequest extends AsyncTask{
             @Override
             public void run() {
                 try {
-                    URL url = new URL(context.getString(R.string.enable_automation_url));
+                    URL url = new URL(context.getString(R.string.enable_automation_url) );
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -135,13 +84,13 @@ public class HttpRequest extends AsyncTask{
                     conn.setDoInput(true);
 
                     JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("PersonId",user_id);
-                    jsonParam.put("DeviceId",device_id);
+                    jsonParam.put("personid",user_id);
+                    jsonParam.put("deviceid",device_id);
 
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     os.writeBytes(jsonParam.toString());
-                    System.out.println(" json param" + jsonParam);
+                    System.out.println("json param" + jsonParam);
                     os.flush();
                     os.close();
                     Log.i("STATUS", String.valueOf(conn.getResponseCode()));
@@ -180,6 +129,7 @@ public class HttpRequest extends AsyncTask{
             //Close our InputStream and Buffered reader
             reader.close();
             streamReader.close();
+            connection.disconnect();
             //Set our result equal to our stringBuilder
             result = stringBuilder.toString();
         } catch (ProtocolException e) {
@@ -191,56 +141,7 @@ public class HttpRequest extends AsyncTask{
         }
         return result;
     }
-/*
 
-    @Override
-    protected HashMap<Integer,String> doInBackground(Object[] objects) {
-
-        final HashMap<Integer,String> users = new HashMap<Integer, String>();
-                try {
-                    URL url = new URL (context.getString(R.string.get_users_url));
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    try {
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                        StringBuilder stringBuilder = new StringBuilder();
-                        String line;
-                        while ((line = bufferedReader.readLine()) != null) {
-                            stringBuilder.append(line).append("\n");
-                        }
-                        bufferedReader.close();
-                        try {
-                            while (true) {
-                                JSONObject object = new JSONObject(stringBuilder.toString());
-                                JSONArray usersArray = new JSONArray(object.get("people").toString());
-
-                                for (int i = 0 ; i < usersArray.length() ; i++) {
-                                    JSONObject obj = new JSONObject(usersArray.get(i).toString());
-                                    //Log.i("user",obj.toString());
-                                    String name = obj.get("name").toString();
-                                    Integer id = (Integer) obj.get("id");
-                                    //usersDictionary.put(id, name);
-                                    Log.i("Id: " , String.valueOf(id));
-                                    Log.i("Name: " ,name);
-                                    users.put(id, name);
-                                }
-                                break;
-                            }
-                        } catch (JSONException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    } finally {
-                        conn.disconnect();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-        Log.i("hashmap in getRequest", users.toString());
-        return users;
-
-    }
- */
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
