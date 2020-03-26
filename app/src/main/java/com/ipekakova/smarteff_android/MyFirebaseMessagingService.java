@@ -44,10 +44,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Intent intent = new Intent(MyFirebaseMessagingService.this,ShowNotificationActivity.class);
             Map<String, String> data = remoteMessage.getData();
-            String user_name = data.get("user_name");
+            String date = data.get("date");
             String device_id = data.get("device_id");
+            Log.i("date",date);
+            Log.i("device_id", device_id);
+
             // add data
-            intent.putExtra("user_name", user_name);
+            intent.putExtra("date", date);
             intent.putExtra("device_id", device_id);
             //LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
             startActivity(intent);
