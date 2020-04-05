@@ -28,27 +28,44 @@
             style="@style/formDropDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="40dp"
+            android:dropDownHeight="100dp"
             android:hint="Select username"
             android:textColorHint="@color/hint"
             android:textAlignment="center"
             android:textColor="#fffffe"
             android:textSize="8pt"
             android:layout_below="@+id/image_view"
-            android:layout_centerHorizontal="true" />
-        <!--
-        <Spinner
-            android:id="@+id/spinner"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rectangle"/>
+
+
+        <EditText
+            android:id="@+id/tv_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/text_view"
+            android:layout_alignStart="@+id/text_view"
             android:layout_below="@+id/text_view"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:textColor="@color/colorMenu"
-            android:textSize="15pt" />
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="textPassword"
+            android:background="@drawable/rectangle"
+            android:ems="8"/>
 
--->
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/text_view"
+            android:layout_alignStart="@+id/text_view"
+            android:layout_below="@+id/tv_password"
+            android:layout_centerHorizontal="true"
+            android:onClick="loginListener"
+            android:text="LOGIN" />
+
+
     </RelativeLayout>
 
 

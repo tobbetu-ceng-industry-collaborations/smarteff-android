@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> tv_adapter;
     AutoCompleteTextView autoCompleteTextView;
+    EditText tv_password;
+    Button login_button;
     User loggedInUser;
     HttpRequest http;
     @Override
@@ -33,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         http = new HttpRequest(this);
         userHashMap = getUsersMap();
-
+        tv_password =(EditText) findViewById(R.id.tv_password);
+        login_button = (Button) findViewById(R.id.loginButton);
         Log.i("userHashMap", userHashMap.toString());
         //Creating an ArrayList of keys(user ids) by passing the keySet
         Set<Integer> keySet = userHashMap.keySet();
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         final Collection<String> values =  userHashMap.values();
         ArrayList<String> users = new ArrayList<String>(values);
 
+
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.text_view);
         Log.i("LIST", users.toString());
         adapter = new ArrayAdapter<String>(this,
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         tv_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,users);
         autoCompleteTextView.setAdapter(tv_adapter);
+
         autoCompleteTextView.setOnItemClickListener((new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Selected item : ",user_name);
                 Log.i("Selected item : ", String.valueOf(user_id));
                 loggedInUser = new User(user_id, user_name);
-
                 JSONObject user_json =new JSONObject();
                 try {
                     user_json.put("id",user_id);
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.d("SELECTED", user_json.toString());
                 //LoginIntent(user_json.toString());
-                LoginIntent(loggedInUser);
+                //LoginIntent(loggedInUser);
             }
         }));
 
@@ -123,8 +130,11 @@ public class MainActivity extends AppCompatActivity {
         Bundle userBundle = new Bundle();
         userBundle.putSerializable("logged_in_user",loggedInUser);
         loginIntent.putExtras(userBundle);
-
         startActivity(loginIntent);
     }
 
+    public void loginListener(View view) {
+        Toast.makeText(getApplicationContext(),"Login Deneme",Toast.LENGTH_LONG).show();
+        LoginIntent(loggedInUser);
+    }
 }
