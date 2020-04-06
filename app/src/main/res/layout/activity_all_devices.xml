@@ -6,18 +6,19 @@
     android:weightSum="1">
 
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal"
         android:weightSum="1"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginRight="81dp"
-        android:layout_marginLeft="81dp">
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp">
         <TextView
             android:id="@+id/device_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Devices:"
+            android:textSize="20dp"
             android:textColor="@color/colorText"
             android:layout_weight="0.25"/>
         <TextView
@@ -25,14 +26,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Status:"
+            android:textSize="20dp"
             android:textColor="@color/colorText"
-
             android:layout_weight="0.25"/>
         <TextView
             android:id="@+id/automation_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Automation:"
+            android:textSize="20dp"
             android:textColor="@color/colorText"
             android:layout_weight="0.25"/>
 
@@ -46,6 +48,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="81dp"
-        android:layout_marginLeft="81dp"/>
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"/>
 </LinearLayout>

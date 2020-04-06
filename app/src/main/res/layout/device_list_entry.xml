@@ -8,28 +8,29 @@
 
     <TextView
         android:id="@+id/device_name"
+        android:textSize="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Devices"
         android:layout_weight="0.25"/>
 
     <ImageView
         android:id="@+id/status"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_weight="0.20"
         android:layout_below="@+id/device_name"/>
     <ImageView
         android:id="@+id/automation"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_weight="0.20"
         android:layout_below="@+id/status" />
 
     <Button
         android:id="@+id/enable_button"
         android:layout_width="40dp"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/automation"
         android:layout_weight="0.25"
         android:clickable="true"
@@ -38,6 +39,6 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:textColor="#191919"
-        android:textSize="10sp" />
+        android:textSize="15dp" />
 
 </LinearLayout>
