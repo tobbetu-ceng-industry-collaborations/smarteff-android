@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="suspend_hour_options">
+        <item
+            >1 hour</item>
+        <item
+            >2 hours</item>
+        <item
+            >6 hours</item>
+        <item
+            >24 hours</item>
+    </string-array>
+</resources>

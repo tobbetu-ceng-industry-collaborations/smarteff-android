@@ -29,13 +29,13 @@
                />
 
             <TextView
+                android:id="@+id/tv_device_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textColor="#87000000"
-                android:text="Your device will be shutdown soon. Do you want to delay shutdown?"
                 android:lineSpacingExtra="3dp"
                 />
 
@@ -47,7 +47,7 @@
                 android:weightSum="2">
 
                 <Button
-                    android:id="@+id/start_compaign_yes"
+                    android:id="@+id/button_suspend"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -56,12 +56,12 @@
                     android:layout_marginBottom="10dp"
                     android:layout_alignParentBottom="true"
                     android:textColor="#f5f1f1f1"
-                    android:textSize="22dp"
+                    android:textSize="10dp"
                     android:text="SUSPEND"
                     />
 
                 <Button
-                    android:id="@+id/start_compaign_no"
+                    android:id="@+id/button_dismiss_suspend"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -70,7 +70,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_alignParentBottom="true"
                     android:textColor="#f5f1f1f1"
-                    android:textSize="22dp"
+                    android:textSize="10dp"
                     android:text="DISMISS"
                    />
 
