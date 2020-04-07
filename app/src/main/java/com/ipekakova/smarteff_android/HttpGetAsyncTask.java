@@ -24,15 +24,14 @@ import java.util.HashMap;
  * Created by User on 1.03.2020.
  */
 
-public class HttpRequest extends AsyncTask{
+public class HttpGetAsyncTask extends AsyncTask{
     private Context context;
 
-    public HttpRequest(Context ctx){
+    public HttpGetAsyncTask(Context ctx){
         context = ctx;
     }
 
-    //http.sendPostForSuspend(currentUser.getId(),device.getId(),year,month,day, hour, minute);
-
+    /*
     public void sendPostForSuspend(final int user_id, final int device_id, final int year, final int month, final int day, final int hour, final int minute) {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -105,6 +104,7 @@ public class HttpRequest extends AsyncTask{
         thread.start();
     }
 
+    */
     protected String doInBackground(Object[] objects) {
         String url = (String ) objects[0];
         String result = "";
