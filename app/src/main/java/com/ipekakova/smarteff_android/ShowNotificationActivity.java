@@ -2,8 +2,10 @@ package com.ipekakova.smarteff_android;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by User on 11.03.2020.
@@ -21,17 +28,25 @@ public class ShowNotificationActivity extends AppCompatActivity implements View.
     Dialog dialog;
     Button yes,no;
     TextView tv_device_info;
+    String date;
+    int device_id;
+    int user_id;
+    SharedPreferences sp;
+
+
     String TAG = "NotificationActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_dialog);
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+        user_id = sp.getInt("user_id", 0);
         AlertDialog.Builder builder = new  AlertDialog.Builder(this);
         tv_device_info = (TextView) findViewById(R.id.tv_device_info);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String date = bundle.getString("date");
-        int device_id = Integer.parseInt(bundle.getString("device_id"));
+        date = bundle.getString("date");
+        device_id = Integer.parseInt(bundle.getString("device_id"));
         Log.i("showNotification: ", date+ device_id);
         tv_device_info.setText("Your device D:" + device_id + "will be automatically shutdown on: "+ date);
         /*
@@ -70,6 +85,17 @@ public class ShowNotificationActivity extends AppCompatActivity implements View.
             builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("personid",user_id);
+                        jsonObject.put("deviceid", device_id);
+                        jsonObject.put("until", date);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    //TODO
+                    new HttpPostAsyncTask(new WeakReference<Context>(getApplicationContext()),"json", jsonObject).execute(getString(R.string.suspend_automation_url));
 
                     //startActivity(intent);
 

@@ -2,14 +2,13 @@ package com.ipekakova.smarteff_android;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,8 +35,8 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
     private ListView listView;
     private DeviceAdapter listViewAdapter;
     User currentUser;
-    HttpRequest http;
-    private BroadcastReceiver mMessageReceiver;
+    HttpGetAsyncTask http;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,10 +49,11 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
 
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.nav_username_tv);
-
-        Intent intent = getIntent();
-        http = new HttpRequest(this);
-        currentUser = (User) intent.getExtras().getSerializable("logged_in_user");
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+        currentUser = new User(sp.getInt("user_id",0),sp.getString("user_name", "") );
+        //Intent intent = getIntent();
+        http = new HttpGetAsyncTask(this);
+        //currentUser = (User) intent.getExtras().getSerializable("logged_in_user");
         navUsername.setText("Logged in as: "+ currentUser.getName().toUpperCase());
 
         Log.i("Logged in user infos:", currentUser.toString());
@@ -80,8 +79,8 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
         protected void onResume() {
             super.onResume();
             currentUser.setDevices(listViewAdapter.devices);
-            LocalBroadcastManager.getInstance(this.getActivity()).registerReceiver(mMessageReceiver,
-                    new IntentFilter("myFunction"));
+            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiverPost, new IntentFilter("json"));
+
             //listViewAdapter.notifyDataSetChanged();
             //Log.i("onresume-devices", currentUser.getDevices().toString());
         }
@@ -89,9 +88,9 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(this.getActivity()).unregisterReceiver(mMessageReceiver);
-    }
-private ArrayList<Device> getUserDevices(){
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiverPost);
+
+    }private ArrayList<Device> getUserDevices(){
     ArrayList<Device> devices = new ArrayList<Device>();
     try {
         //String devicesString  = (String) http.execute( getString(R.string.get_devices_url) ).get();
@@ -169,37 +168,8 @@ private ArrayList<Device> getUserDevices(){
             listViewAdapter.notifyDataSetChanged();
         }
         else {
-
             ArrayList<Device> suspendedDevices = new ArrayList<>();
 
-          /*
-                String jsonObj =  (String) http.execute(R.string.get_scheduled_shutdowns+"/"+ currentUser.getId()).get();
-                JSONObject object = new JSONObject(jsonObj);
-                JSONArray devicesArray = new JSONArray(object.get("devices").toString());
-                Log.i("devicesArray", devicesArray.toString());
-
-                for (int i = 0 ; i < devicesArray.length() ; i++) {
-                    JSONObject obj = new JSONObject(devicesArray.get(i).toString());
-                    Log.i("obj",obj.toString());
-                    //String name = obj.get("name").toString();
-                    int name = obj.getInt("name");
-                    String devicename = "Device:" + name;
-                    Log.i("Device Name: " ,devicename);
-                    Boolean isOn = obj.getBoolean("isOn");
-                    int isOnView, automationView;
-                    String buttonText;
-                    if (isOn){
-                        isOnView = R.drawable.radio_green;
-                    }else{
-                        isOnView = R.drawable.radio_red;
-                    }
-                    JSONObject automationObj = new JSONObject(obj.get("automation").toString());
-                    Boolean suspended = automationObj.getBoolean("suspended");
-                    String expiration = automationObj.get("expiration").toString();
-                    Device d = new SuspendendDevice(name, isOnView, R.drawable.radio_red,"Enable", expiration);
-                    suspendedDevices.add(d);
-                }
-        */
           for(int i = 0; i< currentUser.getDevices().size(); i++){
               Device d = currentUser.getDevices().get(i);
               if ( d.getClass().equals(SuspendendDevice.class)){
@@ -222,4 +192,17 @@ private ArrayList<Device> getUserDevices(){
     public Context getActivity() {
         return this.getApplication();
     }
+
+
+    private BroadcastReceiver broadcastReceiverPost = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if(bundle != null){
+                String result = bundle.getString("json");
+                Log.i("received broadcast: ", result);
+                listViewAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 }
