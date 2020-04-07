@@ -1,8 +1,9 @@
 package com.ipekakova.smarteff_android;
 
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,23 +19,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.TimeoutException;
+import android.view.ViewGroup.LayoutParams;
+
+import static android.content.ContentValues.TAG;
+
 
 /**
  * Created by User on 2.02.2020.
  */
 
 public class DeviceAdapter extends ArrayAdapter<Device> {
-    private HttpRequest http;
     private final LayoutInflater inflater;
     private final Context context;
     //private idi deneme icin değistirdim.
-    public DeviceViewHolder holder;
+    private DeviceViewHolder holder;
     private User currentUser;
-    //private final ArrayList<Device> devices;
-    public ArrayList<Device> devices;
+    private ArrayList<Device> devices;
+    private String TAG="DeviceAdapter";
 
 
     public DeviceAdapter(Context context, ArrayList<Device> devices, User currentUser) {
@@ -42,18 +56,22 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
         this.context = context;
         this.devices = devices;
         this.currentUser = currentUser;
-        http = new HttpRequest(context);
         inflater = LayoutInflater.from(context);
     }
     public ArrayList<Device> getDevices(){
         return devices;
     }
 
+    public void updateDeviceList(ArrayList<Device> newlist) {
+        this.devices = newlist;
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
 
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.device_list_entry, null);
             holder = new DeviceViewHolder();
             holder.status = (ImageView) convertView.findViewById(R.id.status);
@@ -62,26 +80,42 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
             holder.button = (Button) convertView.findViewById(R.id.enable_button);
             holder.button.setOnClickListener(new View.OnClickListener() {
                 Device device = devices.get(position);
-
                 @Override
                 public void onClick(View view) {
 
                     //Device device = devices.get(position);
                     // If selected device button is "Enable" then don't show any dialog, directly activate the automated shutdown
-                    if (device.getAutomation() == R.drawable.radio_red){
-                        Log.i("Before change:", String.valueOf(device.getClass()));
-                        Log.i("red", "Clicked on ENABLE button");
+                    //if (device.getAutomation() == R.drawable.radio_red){
+                    if(device.getClass().equals(SuspendendDevice.class)){
+                        Log.d(TAG, "getClassequals: "+device.getClass().equals(SuspendendDevice.class));
+                        Log.d(TAG, "equals: "+device.equals(SuspendendDevice.class));
+
+                        Toast.makeText(context, "Enabled shutdown", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Before change:"+String.valueOf(device.getClass()));
+                        Log.d(TAG, "before-device"+ device.toString());
+                        Log.d(TAG,"Before: "+devices.toString());
                         device.setAutomation(R.drawable.radio_green);
                         device.setSuspendOrEnable("Suspend");
+                        devices.remove(position);
+                        AutomatedDevice newDevice = new AutomatedDevice(device.getId(), device.getStatus(), device.getAutomation(),device.getSuspendOrEnable());
+                        devices.add(position, newDevice);
+                        Log.d(TAG,"After: "+devices.toString());
+                        //Http Post Request for sending enable automation to the server.
+                        //http.sendPostForEnable(currentUser.getId(), device.getId());
+                        try {
+                            //sendPostForEnable(, device.getId());
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("personid",currentUser.getId());
+                            jsonObject.put("deviceid",device.getId());
+                            new HttpPost(jsonObject).execute(context.getString(R.string.enable_automation_url));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         holder.automation.setImageResource(device.getAutomation());
                         holder.button.setText(device.getSuspendOrEnable());
-                        device = new AutomatedDevice(device.getId(), device.getStatus(), device.getAutomation(),device.getSuspendOrEnable());
-                        Log.i("After change:", String.valueOf(device.getClass()));
+                        Log.i("after-device", device.toString());
 
-                        //Http Post Request for sending enable automation to the server.
-                        http.sendPostForEnable(currentUser.getId(), device.getId());
-                        notifyDataSetChanged();
-                        Toast.makeText(context, "Enabled shutdown", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         final Dialog dateDialog = new Dialog(context);
@@ -113,15 +147,30 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
                                         int hour = timePicker.getHour();
                                         int minute = timePicker.getMinute();
                                         Toast.makeText(context, "Suspendend until: "+ day+"/"+ month+"/" + year +"  "+ hour +": "+ minute, Toast.LENGTH_SHORT).show();
-                                        device = new SuspendendDevice(device.getId(),device.getStatus(),device.getAutomation(), device.getSuspendOrEnable(), day, month,year);
+                                        Log.d(TAG, "Before-devices:"+ devices.toString());
+                                        devices.remove(position);
+                                        SuspendendDevice newDevice = new SuspendendDevice(device.getId(),device.getStatus(),device.getAutomation(), device.getSuspendOrEnable(), day, month,year);
                                         //Http Post Request for sending suspension time infos to the server.
-
+                                        devices.add(position, newDevice);
+                                        Log.d(TAG, "After-devices:"+ devices.toString());
                                         Log.i("After change:", String.valueOf(device.getClass()));
                                         // Post request for suspension
-                                        http.sendPostForSuspend(currentUser.getId(),device.getId(),year,month,day, hour, minute);
+                                        try {
+                                            //sendPostForSuspend(currentUser.getId(),device.getId(),year,month,day, hour, minute);
+                                            JSONObject jsonObject = new JSONObject();
+                                            jsonObject.put("personid",currentUser.getId());
+                                            jsonObject.put("deviceid",device.getId());
+                                            // “until”:”2020-01-29-10-30-00”
+                                            jsonObject.put("until", year+ "-"+ month + "-"+ day+ "-"+ hour + "-"+minute+ "-"+ "00");
+                                            new HttpPost(jsonObject).execute(context.getString(R.string.suspend_automation_url));
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
                                         holder.automation.setImageResource(device.getAutomation());
                                         holder.button.setText(device.getSuspendOrEnable());
-                                        notifyDataSetChanged();
+                                        //notifyDataSetChanged();
                                         timeDialog.dismiss();
                                         dateDialog.dismiss();
                                     }
@@ -144,63 +193,10 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
                             }
                         });
                         dateDialog.show();
-
-                        /*
-                        Log.i("Before change:", String.valueOf(device.getClass()));
-                        final Dialog dialog = new Dialog(context);
-                        dialog.setContentView(R.layout.suspend_timepicker_dialog);
-
-                        // custom dialog elemanlarını tanımla - text, image ve button
-                        Button btnKaydet = (Button) dialog.findViewById(R.id.button_kaydet);
-                        Button btnIptal = (Button) dialog.findViewById(R.id.button_iptal);
-                        TextView tvBaslik = (TextView) dialog.findViewById(R.id.textview_baslik);
-                        final TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.imageview_resim);
-                        // custom dialog elemanlarına değer ataması yap - text, image
-                        tvBaslik.setText("Are you sure?");
-                        // tamam butonunun tıklanma olayları
-                        btnKaydet.setOnClickListener(new View.OnClickListener() {
-                            @RequiresApi(api = Build.VERSION_CODES.M)
-                            @Override
-                            public void onClick(View v) {
-                                Log.i("red", "Clicked on SUSPEND button");
-                                // Automation is on ise kapatti.
-                                device.setSuspendOrEnable("Enable");
-                                device.setAutomation(R.drawable.radio_red);
-                                Toast.makeText(context, "Suspended automated shutdown", Toast.LENGTH_SHORT).show();
-                                int hour = timePicker.getHour();
-                                int minute = timePicker.getMinute();
-                                Toast.makeText(context, hour +": "+ minute, Toast.LENGTH_SHORT).show();
-                                //"15 January 20:00pm 2020
-                                String expiration = "20 February " + hour+":"+minute+" 2020";
-                                device = new SuspendendDevice(device.getId(),device.getStatus(),device.getAutomation(), device.getSuspendOrEnable(),expiration);
-                                //Http Post Request for sending suspension time infos to the server.
-
-                                Log.i("After change:", String.valueOf(device.getClass()));
-                                http.sendPostForSuspend(currentUser.getId(),device.getId(), hour, minute);
-                                holder.automation.setImageResource(device.getAutomation());
-                                holder.button.setText(device.getSuspendOrEnable());
-                                notifyDataSetChanged();
-                                dialog.dismiss();
-                            }
-                        });
-
-                        // iptal butonunun tıklanma olayları
-                        btnIptal.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog.show();
-                        Log.i("green", "Clicked on SUSPEND button");
-                        // Automation is on ise kapatti.
-                        device.setSuspendOrEnable("Enable");
-                        device.setAutomation(R.drawable.radio_red);
-                        */
                     }
-
                 }
             });
+
             convertView.setTag(holder);
         }
         else{
@@ -247,7 +243,103 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
         //Switch enableShutDown;
         Button button;
     }
+    /*
+    private void sendPostForEnable( int user_id,  int device_id) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("personid",user_id);
+        jsonObject.put("deviceid",device_id);
 
+        new HttpPostAsyncTask(new WeakReference<Context>(context),"json", jsonObject).execute(context.getString(R.string.enable_automation_url));
+    }
+
+    private void sendPostForSuspend(int user_id, int device_id, int year, int month, int day, int hour, int minute) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("personid",user_id);
+        jsonObject.put("deviceid",device_id);
+        // “until”:”2020-01-29-10-30-00”
+        jsonObject.put("until", year+ "-"+ month + "-"+ day+ "-"+ hour + "-"+minute+ "-"+ "00");
+        new HttpPostAsyncTask(new WeakReference<Context>(context),"json", jsonObject).execute(context.getString(R.string.suspend_automation_url));
+    }
+
+    */
+    private class HttpPost extends AsyncTask<String, String, String> {
+        // This is the JSON body of the post
+        JSONObject postData;
+
+        // This is a constructor that allows you to pass in the JSON body
+        public HttpPost(JSONObject postData) {
+            if (postData != null) {
+                this.postData = postData;
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                // This is getting the url from the string we passed in
+                URL url = new URL(params[0]);
+                // Create the urlConnection
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestMethod("POST");
+                // Send the post body
+                if (this.postData != null) {
+                    OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
+                    writer.write(postData.toString());
+                    writer.flush();
+                }
+                int statusCode = urlConnection.getResponseCode();
+                Log.i("json", postData.toString());
+                Log.i("STATUS", String.valueOf(statusCode));
+                Log.i("MSG", urlConnection.getResponseMessage());
+
+                if (statusCode ==  200) {
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                    String response = convertInputStreamToString(inputStream);
+                    inputStream.close();
+                    urlConnection.disconnect();
+                    return response;
+                } else {
+                    // Status code is not 200
+                    // Do something to handle the error
+                    urlConnection.disconnect();
+                    Log.d("statusCode:", String.valueOf(statusCode));
+                    return null;
+                }
+
+            } catch (Exception e) {
+                Log.d(TAG, e.getLocalizedMessage());
+            }
+            return null;
+        }
+
+        private String convertInputStreamToString(InputStream inputStream) throws IOException {
+            BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            try {
+                while((line = bufferedReader.readLine()) != null) {
+                    sb.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            bufferedReader.close();
+            return sb.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "Result: "+ result);
+            Log.d(TAG,"onPostExecute:"+devices.toString());
+            notifyDataSetChanged();
+            //updateDeviceList(devices);
+        }
+    }
 
 }
 
