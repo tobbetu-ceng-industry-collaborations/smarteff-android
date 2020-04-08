@@ -4,20 +4,33 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class User implements Serializable {
+
+    private static User user;
     private int id;
     private String name;
     private ArrayList<Device> devices;
 
-    public User(int id,  String name) {
+
+    private User(){
+    }
+
+    public static synchronized User getInstance() {
+        if(user == null) {
+            user = new User();
+        }
+        return user;
+    }
+    /*
+    private User(int id,  String name) {
         this.id = id;
         this.name = name;
     }
-    public User(int id,  String name, ArrayList<Device> devices) {
+    private User(int id,  String name, ArrayList<Device> devices) {
         this.id = id;
         this.name = name;
         this.devices = devices;
     }
-
+    */
     public int getId() {
         return id;
     }
@@ -43,5 +56,10 @@ public class User implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    //Make singleton from serialize and deserialize operation.
+    protected Object readResolve() {
+        return getInstance();
     }
 }
