@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class ShowDevicesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    //private ArrayList<Device> devices;
+
     private ListView listView;
     private DeviceAdapter listViewAdapter;
     User currentUser;
@@ -43,17 +43,17 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_all_devices);
         setContentView(R.layout.activity_nav_main);
-        startIntentService();
+        startUpdateService();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.nav_username_tv);
         sp = getSharedPreferences("login",MODE_PRIVATE);
-        currentUser = new User(sp.getInt("user_id",0),sp.getString("user_name", "") );
-        //Intent intent = getIntent();
+        currentUser = User.getInstance();
+
+
         http = new HttpGetAsyncTask(this);
-        //currentUser = (User) intent.getExtras().getSerializable("logged_in_user");
         navUsername.setText("Logged in as: "+ currentUser.getName().toUpperCase());
         Log.i("Logged in user infos:", currentUser.toString());
         try {
@@ -68,7 +68,7 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
 
     }
 
-    public void startIntentService() {
+    public void startUpdateService() {
         Intent intent = new Intent( ShowDevicesActivity.this, UpdateDevicesService.class);
         intent.putExtra("sleepTime", 50);
         startService(intent);

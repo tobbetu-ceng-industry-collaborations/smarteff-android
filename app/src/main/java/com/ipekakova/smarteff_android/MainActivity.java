@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
         if (sp.getBoolean("logged", false)) {
-            goToMainActivity();
+            goToDevicesActivity();
         }
         else{
             http = new HttpGetAsyncTask(this);
@@ -76,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
                     sp.edit().putString("user_name",user_name).apply();
                     sp.edit().putInt("user_id",user_id).apply();
 
-                    loggedInUser = new User(user_id, user_name);
+                    loggedInUser = User.getInstance();
+                    loggedInUser.setId(user_id);
+                    loggedInUser.setName(user_name);
                     JSONObject user_json = new JSONObject();
                     try {
                         user_json.put("id", user_id);
@@ -86,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     Log.d("SELECTED", user_json.toString());
-                    //LoginIntent(user_json.toString());
-                    //LoginIntent(loggedInUser);
+
                 }
             }));
 
@@ -137,19 +138,14 @@ public class MainActivity extends AppCompatActivity {
         }
         return users;
     }
-    public void LoginIntent(User loggedInUser) {
+
+    //Listener for Login Button
+    public void loginListener(View view) {
+        //Toast.makeText(getApplicationContext(),"Login Deneme",Toast.LENGTH_LONG).show();
         Intent loginIntent = new Intent(getApplicationContext(), ShowDevicesActivity.class);
-        Bundle userBundle = new Bundle();
-        userBundle.putSerializable("logged_in_user",loggedInUser);
-        loginIntent.putExtras(userBundle);
         startActivity(loginIntent);
     }
-
-    public void loginListener(View view) {
-        Toast.makeText(getApplicationContext(),"Login Deneme",Toast.LENGTH_LONG).show();
-        LoginIntent(loggedInUser);
-    }
-    public void goToMainActivity(){
+    public void goToDevicesActivity(){
         Intent i = new Intent(this,ShowDevicesActivity.class);
         startActivity(i);
     }

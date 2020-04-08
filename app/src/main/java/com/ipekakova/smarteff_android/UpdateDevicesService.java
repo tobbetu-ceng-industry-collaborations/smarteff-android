@@ -36,7 +36,8 @@ public class UpdateDevicesService extends IntentService {
         Log.d(TAG, "oncreate methodu " + Thread.currentThread().getName() + " threadi üzerinden cagrildi");
         super.onCreate();
         sp = getSharedPreferences("login",MODE_PRIVATE);
-        currentUser = new User(sp.getInt("user_id",0),sp.getString("user_name", "") );
+        //currentUser = new User(sp.getInt("user_id",0),sp.getString("user_name", "") );
+        currentUser = User.getInstance();
     }
 
 
