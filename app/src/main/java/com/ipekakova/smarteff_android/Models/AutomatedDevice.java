@@ -1,10 +1,11 @@
-package com.ipekakova.smarteff_android;
+package com.ipekakova.smarteff_android.Models;
 
 /**
  * Created by User on 4.03.2020.
  */
 
 public class AutomatedDevice extends Device {
+
 
     public AutomatedDevice(int id, int isOn, int automation, String suspendOrEnable) {
         super(id, isOn, automation, suspendOrEnable);

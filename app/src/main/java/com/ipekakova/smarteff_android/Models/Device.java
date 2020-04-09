@@ -1,4 +1,4 @@
-package com.ipekakova.smarteff_android;
+package com.ipekakova.smarteff_android.Models;
 
 /**
  * Created by User on 3.03.2020.

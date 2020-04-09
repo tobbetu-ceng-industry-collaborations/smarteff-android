@@ -1,4 +1,4 @@
-package com.ipekakova.smarteff_android;
+package com.ipekakova.smarteff_android.Models;
 
 /**
  * Created by User on 3.03.2020.
@@ -30,13 +30,19 @@ public class SuspendendDevice extends Device {
         this.month = month;
         this.year = year;
     }
+
+    public String getExpiration() {
+        return expiration;
+    }
+
     @Override
     public String toString() {
         return "SuspendendDevice{" +
-                "expirationDay='" + expirationDay + '\'' +
-                ", expirationMonth='" + expirationMonth + '\'' +
-                ", expirationYear='" + expirationYear + '\'' +
-                ", expirationTime='" + expirationTime + '\'' +
+                "id=" + id +
+                ", deviceIsOn=" + deviceIsOn +
+                ", automation=" + automation +
+                ", suspendOrEnable='" + suspendOrEnable +
+                "expiration='" + expiration + '\'' +
                 '}';
     }
 }

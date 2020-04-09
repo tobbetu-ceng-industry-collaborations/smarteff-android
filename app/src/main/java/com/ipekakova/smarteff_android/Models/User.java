@@ -1,4 +1,4 @@
-package com.ipekakova.smarteff_android;
+package com.ipekakova.smarteff_android.Models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
