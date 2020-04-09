@@ -1,8 +1,10 @@
 package com.ipekakova.smarteff_android.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +42,7 @@ public class ScheduledShutdownsActivity extends AppCompatActivity implements Nav
         setContentView(R.layout.activity_nav_suspended);
 
         Toolbar toolbar = findViewById(R.id.toolbar_suspended);
+        toolbar.setTitle("Suspended Shutdowns");
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout_suspended);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -76,6 +79,15 @@ public class ScheduledShutdownsActivity extends AppCompatActivity implements Nav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
+        // Handle navigation view item clicks here.
+        int id = menuItem.getItemId();
+        if (id == R.id.nav_devices) {
+
+            Intent allDevicesActivity = new Intent(this, ShowDevicesActivity.class);
+            startActivity(allDevicesActivity);
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
