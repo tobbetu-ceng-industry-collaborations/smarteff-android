@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ipekakova.smarteff_android.DateParser;
 import com.ipekakova.smarteff_android.Models.User;
 import com.ipekakova.smarteff_android.R;
 import com.ipekakova.smarteff_android.Services.*;
@@ -86,11 +87,11 @@ public class ShowNotificationActivity extends AppCompatActivity implements View.
             // 2. Chain together various setter methods to set the dialog characteristics
             builder.setTitle("Select a time for suspend your shutdown:");
                     builder.setSingleChoiceItems(R.array.suspend_hour_options, -1 ,new DialogInterface.OnClickListener() {
-                        String[] hours = getResources().getStringArray(R.array.suspend_hour_options);
+                        int[] hours = getResources().getIntArray(R.array.hours);
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             Log.d(TAG, hours[which]+ " suspended.");
-                            addedHour = Integer.parseInt(hours[which]);
+                            addedHour = hours[which];
 
                         }
                     });
@@ -99,7 +100,7 @@ public class ShowNotificationActivity extends AppCompatActivity implements View.
                 public void onClick(DialogInterface dialogInterface, int i) {
                     DateParser dateParser = new DateParser(date);
                     JSONObject jsonObject = new JSONObject();
-                    String finalDate = dateParser.getFinalDate(addedHour);
+                    String  finalDate = dateParser.addHour(addedHour);
 
                     try {
                         jsonObject.put("personid",user_id);
@@ -123,45 +124,5 @@ public class ShowNotificationActivity extends AppCompatActivity implements View.
         }
     }
 
-    //TODO
-   private class DateParser{
-
-    private int year, month, day, hour, minute, second;
-        private static final String DATE_FORMAT = "yyyy-MM-dd-HH-mm-ss";
-        private Date date= null;
-
-        private DateParser(String until){
-            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-            String currentDateandTime = sdf.format(new Date());
-            try {
-                this.date = sdf.parse(currentDateandTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            //calendar.add(Calendar.MINUTE, additionalMinute);
-            //calendar.add(Calendar.SECOND, additionalSeconds);
-
-           //“until”:”2020-01-29-10-30-00”
-           String [] dates = until.split("-");
-           year = Integer.parseInt(dates[0]);
-           month = Integer.parseInt(dates[1]);
-           day = Integer.parseInt(dates[2]);
-           hour = Integer.parseInt(dates[3]);
-           minute = Integer.parseInt(dates[4]);
-           second = Integer.parseInt(dates[5]);
-       }
-        private String getFinalDate(int addedHour){
-            int hour = this.hour + addedHour;
-            String date = year+ "-"+ month + "-"+ day+ "-"+ hour + "-"+minute+ "-"+ second;
-            return date;
-        }
-       private Calendar addHour(int additionalHour){
-           Calendar calendar = Calendar.getInstance();
-           calendar.setTime(date);
-           calendar.add(Calendar.HOUR, additionalHour );
-           return calendar;
-       }
-
-    }
 
 }
