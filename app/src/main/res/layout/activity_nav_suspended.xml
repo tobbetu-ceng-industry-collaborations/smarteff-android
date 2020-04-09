@@ -5,18 +5,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/drawer_layout_suspended"
     android:fitsSystemWindows="true"
-    tools:context=".UI.ShowDevicesActivity"
+    tools:context=".UI.ScheduledShutdownsActivity"
     tools:openDrawer="start">
-    
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_suspended"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:popupTheme="@style/Theme.AppCompat.Light"
             android:layout_width="match_parent"
@@ -25,11 +26,11 @@
         </android.support.v7.widget.Toolbar>
 
         <FrameLayout
-            android:id="@+id/fragment_container"
+            android:id="@+id/fragment_container_suspended"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <include
-                layout="@layout/activity_all_devices"
+                layout="@layout/scheduled_shutdowns_activity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>
@@ -37,7 +38,7 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/nav_view_suspended"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

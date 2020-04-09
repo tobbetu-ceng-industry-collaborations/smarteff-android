@@ -13,31 +13,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".UI.MainActivity">
             android:windowSoftInputMode="adjustResize"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowDevicesActivity"
+        <activity android:name=".UI.ShowDevicesActivity"
             />
-        <activity android:name=".ShowNotificationActivity"
-            android:label="Suspend Shutdown!"
+        <activity android:name=".UI.ShowNotificationActivity"
+            android:label="SamertEff Notification"
             android:theme="@style/Theme.AppCompat.Dialog"
             />
+
         <activity
-            android:name=".ScheduledShutdownsActivity"
+            android:name=".UI.ScheduledShutdownsActivity"
             android:label="@string/title_activity_scheduled_shutdowns"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service
-            android:name=".UpdateDevicesService"
+            android:name=".Services.UpdateDevicesService"
             android:exported="false"/>
 
         <!-- [START firebase_service] -->
         <service
-            android:name=".MyFirebaseMessagingService">
+            android:name=".Services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

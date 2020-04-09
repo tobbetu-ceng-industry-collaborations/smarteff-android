@@ -63,7 +63,6 @@ import butterknife.ButterKnife;
 public class ShowDevicesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
-
     @Bind(R.id.device_list) RecyclerView mRecyclerView;
     private DeviceAdapter mAdapter;
     User currentUser;
@@ -82,7 +81,6 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -333,7 +331,7 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
             mAdapter.notifyDataSetChanged();
         }
         else {
-
+            /*
             ArrayList<Device> suspendedDevices = new ArrayList<>();
               for(int i = 0; i< currentUser.getDevices().size(); i++){
                   Device d = currentUser.getDevices().get(i);
@@ -345,8 +343,9 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
                 mAdapter.setDevices(suspendedDevices);
                 mAdapter.notifyDataSetChanged();
 
-            //Intent suspendedActivity = new Intent(this, ScheduledShutdownsActivity.class);
-            //startActivity(suspendedActivity);
+            */
+            Intent suspendedActivity = new Intent(this, ScheduledShutdownsActivity.class);
+            startActivity(suspendedActivity);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
