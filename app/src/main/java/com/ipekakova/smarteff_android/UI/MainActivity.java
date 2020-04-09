@@ -1,4 +1,4 @@
-package com.ipekakova.smarteff_android;
+package com.ipekakova.smarteff_android.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.ipekakova.smarteff_android.Models.User;
+import com.ipekakova.smarteff_android.R;
+import com.ipekakova.smarteff_android.Services.HttpGetAsyncTask;
 
 import java.util.ArrayList;
 import java.util.Collection;
