@@ -1,4 +1,4 @@
-package com.ipekakova.smarteff_android;
+package com.ipekakova.smarteff_android.Services;
 
 
 import android.content.Context;
@@ -101,6 +101,7 @@ public class HttpPostAsyncTask extends AsyncTask<String, String, String> {
         super.onPostExecute(result);
         Intent intent = new Intent("result");
         intent.putExtra("json", result);
-        LocalBroadcastManager.getInstance(applicationContext.get()).sendBroadcast(intent);
+
+        //LocalBroadcastManager.getInstance(applicationContext.get()).sendBroadcast(intent);
     }
 }

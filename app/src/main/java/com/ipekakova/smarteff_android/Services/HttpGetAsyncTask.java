@@ -1,4 +1,4 @@
-package com.ipekakova.smarteff_android;
+package com.ipekakova.smarteff_android.Services;
 
 import android.content.Context;
 import android.content.Intent;

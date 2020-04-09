@@ -1,4 +1,4 @@
-package com.ipekakova.smarteff_android;
+package com.ipekakova.smarteff_android.Services;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -7,10 +7,8 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.ipekakova.smarteff_android.Models.User;
+import com.ipekakova.smarteff_android.R;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class UpdateDevicesService extends IntentService {
@@ -51,7 +48,7 @@ public class UpdateDevicesService extends IntentService {
         while (true) {
             try {
                 // 1 dakikada bir istek atar.
-                Thread.sleep(60*1000);
+                Thread.sleep(30*1000);
                 String devices = getUserDevices();
                 Intent intent1 = new Intent("my.action");
                 intent1.putExtra("veri", devices);
@@ -106,7 +103,8 @@ public class UpdateDevicesService extends IntentService {
                 StringBuilder stringBuilder = new StringBuilder();
                 //Check if the line we are reading is not null
                 while((inputLine = reader.readLine()) != null){
-                    stringBuilder.append(inputLine).append("\n");            }
+                    stringBuilder.append(inputLine).append("\n");
+                }
                 //Close our InputStream and Buffered reader
                 reader.close();
                 streamReader.close();
