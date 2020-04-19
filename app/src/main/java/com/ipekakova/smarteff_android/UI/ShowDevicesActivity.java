@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.ipekakova.smarteff_android.DateUtils;
 import com.ipekakova.smarteff_android.R;
 import com.ipekakova.smarteff_android.UI.*;
 import com.ipekakova.smarteff_android.Adapters.DeviceAdapter;
@@ -50,7 +51,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
@@ -275,7 +282,6 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
                     JSONObject object = new JSONObject(devicesString);
                     JSONArray devicesArray = new JSONArray(object.get("devices").toString());
                     Log.i("devicesArray", devicesArray.toString());
-
                     for (int i = 0 ; i < devicesArray.length() ; i++) {
                         JSONObject obj = new JSONObject(devicesArray.get(i).toString());
                         Log.i("obj",obj.toString());
@@ -301,10 +307,14 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
                         if (suspended.equals("True")){ // Otomatik kapatma ertelendiyse
                             automationView = R.drawable.radio_red;
                             buttonText = "Enable";
-                            String expiration = automationObj.get("expiration").toString();
-                            Device suspendendDevice = new SuspendendDevice(deviceId, isOnView, automationView, buttonText, expiration);
+                            DateUtils dateUtils = new DateUtils();
+                            Log.d("locale: ", String.valueOf(Locale.getDefault()));
+                            Calendar cal = dateUtils.getCalendarFromDateTime(automationObj.getString("expiration"));
+                            Log.d("Date: ",cal.toString());
+                            String expiration = dateUtils.changeDateTimeFormat(automationObj.getString("expiration"));
+                            Device suspendendDevice = new SuspendendDevice(deviceId, isOnView, automationView, buttonText,cal, expiration);
                             devices.add(suspendendDevice);
-                            Log.i("expiration: " , expiration);
+                            Log.d("expiration_new_format: " , expiration);
                         }
                         else{ //Automation active
                             automationView = R.drawable.radio_green;
@@ -318,6 +328,9 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
                 }
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Log.e(TAG,"Couldn't parse the expiration format!!");
             }
         return devices;
     }

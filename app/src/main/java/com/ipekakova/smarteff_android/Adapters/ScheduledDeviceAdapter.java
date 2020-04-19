@@ -1,8 +1,11 @@
 package com.ipekakova.smarteff_android.Adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +13,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
-
+import com.ipekakova.smarteff_android.DateParser;
 import com.ipekakova.smarteff_android.Models.SuspendendDevice;
 import com.ipekakova.smarteff_android.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,8 +64,9 @@ public class ScheduledDeviceAdapter extends RecyclerView.Adapter<ScheduledDevice
 
         @Bind(R.id.sch_device_name) TextView device_name_tv;
         @Bind(R.id.sch_status) ImageView sch_status_iv;
-        @Bind(R.id.sch_time) TextClock sch_time_tc;
+        @Bind(R.id.sch_time) TextView sch_time_tv;
         private Context mContext;
+        private String TAG = "FormatDevices";
 
         public ScheduledDeviceViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +77,9 @@ public class ScheduledDeviceAdapter extends RecyclerView.Adapter<ScheduledDevice
         public void bindDevice(SuspendendDevice sch_device) {
             device_name_tv.setText("Device:"+sch_device.getId());
             sch_status_iv.setImageResource(sch_device.getStatus());
+            sch_time_tv.setText(sch_device.getExpiration());
+
         }
+
     }
 }

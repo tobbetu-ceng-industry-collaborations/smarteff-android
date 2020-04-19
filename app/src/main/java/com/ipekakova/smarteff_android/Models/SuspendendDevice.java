@@ -1,5 +1,7 @@
 package com.ipekakova.smarteff_android.Models;
 
+import java.util.Calendar;
+
 /**
  * Created by User on 3.03.2020.
  */
@@ -14,16 +16,23 @@ public class SuspendendDevice extends Device {
     public int day;
     public int month;
     public int year;
+    public int hour;
+    public int minute;
+    public int second;
+    private Calendar calendar;
 
-    public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,String expiration) {
+    public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,Calendar calendar, String expiration) {
         super(id, isOn, automation, suspendOrEnable);
+        this.calendar = calendar;
         this.expiration = expiration;
-        String []  dates = expiration.split(" ");
-        expirationDay = dates[0];
-        expirationMonth = dates[1];
-        expirationTime = dates[2];
-        expirationYear = dates[3];
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+        second = calendar.get(Calendar.SECOND);
     }
+
     public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,int day, int month, int year) {
         super(id, isOn, automation, suspendOrEnable);
         this.day = day;
@@ -33,6 +42,11 @@ public class SuspendendDevice extends Device {
 
     public String getExpiration() {
         return expiration;
+    }
+
+
+    public Calendar getCalendar() {
+        return calendar;
     }
 
     @Override
