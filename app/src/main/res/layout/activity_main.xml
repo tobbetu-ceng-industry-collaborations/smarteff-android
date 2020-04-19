@@ -17,27 +17,27 @@
             android:id="@+id/image_view"
             android:layout_width="400dp"
             android:layout_height="250dp"
-            android:layout_marginTop="47dp"
-            android:src="@drawable/woman_earth"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="47dp"
+            android:src="@drawable/woman_earth" />
 
         <AutoCompleteTextView
             android:id="@+id/text_view"
             style="@style/formDropDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:dropDownHeight="100dp"
-            android:hint="Select username"
-            android:textColorHint="@color/hint"
-            android:textAlignment="center"
-            android:textColor="#fffffe"
-            android:textSize="8pt"
             android:layout_below="@+id/image_view"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/rectangle"/>
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rectangle"
+            android:dropDownHeight="100dp"
+            android:hint="Select username"
+            android:textAlignment="center"
+            android:textColor="#fffffe"
+            android:textColorHint="@color/hint"
+            android:textSize="8pt" />
 
 
         <EditText
@@ -47,21 +47,22 @@
             android:layout_alignLeft="@+id/text_view"
             android:layout_alignStart="@+id/text_view"
             android:layout_below="@+id/text_view"
-            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
-            android:inputType="textPassword"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rectangle"
-            android:ems="8"/>
+            android:ems="8"
+            android:hint="Password"
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/text_view"
             android:layout_alignStart="@+id/text_view"
             android:layout_below="@+id/tv_password"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:onClick="loginListener"
             android:text="LOGIN" />
 

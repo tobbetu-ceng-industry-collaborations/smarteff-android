@@ -4,32 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="1">
+    android:gravity="center"
+>
 
     <TextView
         android:id="@+id/sch_device_name"
         android:textSize="20dp"
-        android:layout_width="75dp"
-        android:layout_height="40dp"
+        android:textColor="#404040"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Devices"
-        android:layout_weight="0.30"/>
+        />
 
     <ImageView
         android:id="@+id/sch_status"
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:layout_weight="0.30"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_below="@+id/sch_device_name"/>
 
-    <TextClock
+    <TextView
         android:id="@+id/sch_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sch_status"
-        android:layout_weight="0.30"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:textColor="#060606"
         android:ems="10"
-        android:format12Hour="hh:mm:ss a"
-        android:inputType="date" />
+       />
 
 
 </LinearLayout>
