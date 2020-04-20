@@ -153,7 +153,7 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
                     device.setAutomation(R.drawable.radio_green);
                     device.setSuspendOrEnable("Suspend");
                     currentUser.getDevices().remove(position);
-                    AutomatedDevice newDevice = new AutomatedDevice(device.getId(), device.getStatus(), device.getAutomation(), device.getSuspendOrEnable());
+                    AutomatedDevice newDevice = new AutomatedDevice(device.getId(), device.getStatus(), device.getAutomation(), device.getSuspendOrEnable(), device.getDeviceType());
                     currentUser.getDevices().add(position, newDevice);
                     Log.d(TAG, "After: " + currentUser.getDevices().toString());
                     //Http Post Request for sending enable automation to the server.
@@ -181,7 +181,8 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
                         @Override
                         public void onClick(View view) {
                             final int year = datePicker.getYear();
-                            final int month = datePicker.getMonth();
+                            // Months are indexed starting at 0 in DateTime Class so need to add 1 to the month value!!
+                            final int month = datePicker.getMonth()+1;
                             final int day = datePicker.getDayOfMonth();
                             final Dialog timeDialog = new Dialog(ShowDevicesActivity.this);
                             timeDialog.setContentView(R.layout.suspend_timepicker_dialog);
@@ -203,7 +204,9 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
                                     Toast.makeText(getApplicationContext(), "Suspendend until: " + day + "/" + month + "/" + year + "  " + hour + ": " + minute, Toast.LENGTH_SHORT).show();
                                     Log.d(TAG, "Before-devices:" + currentUser.getDevices().toString());
                                     currentUser.getDevices().remove(position);
-                                    SuspendendDevice newDevice = new SuspendendDevice(device.getId(), device.getStatus(), device.getAutomation(), device.getSuspendOrEnable(), day, month, year);
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.set(year, month-1, day, hour, minute,00);
+                                    SuspendendDevice newDevice = new SuspendendDevice(device.getId(), device.getStatus(), device.getAutomation(), device.getSuspendOrEnable(),calendar, device.getDeviceType());
                                     //Http Post Request for sending suspension time infos to the server.
                                     currentUser.getDevices().add(position, newDevice);
                                     Log.d(TAG, "After-devices:" + currentUser.getDevices().toString());
@@ -288,7 +291,7 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
 
                         Integer deviceId = (Integer) obj.get("id");
                         Log.i("Device Name: " ,deviceId.toString());
-
+                        String device_type = obj.getString("type");
                         String deviceName = obj.get("name").toString();
                         Log.i("Device Name: " ,deviceName);
                         //Boolean isOn = obj.getBoolean("isOn");
@@ -311,15 +314,13 @@ public class ShowDevicesActivity extends AppCompatActivity implements Navigation
                             Log.d("locale: ", String.valueOf(Locale.getDefault()));
                             Calendar cal = dateUtils.getCalendarFromDateTime(automationObj.getString("expiration"));
                             Log.d("Date: ",cal.toString());
-                            String expiration = dateUtils.changeDateTimeFormat(automationObj.getString("expiration"));
-                            Device suspendendDevice = new SuspendendDevice(deviceId, isOnView, automationView, buttonText,cal, expiration);
+                            Device suspendendDevice = new SuspendendDevice(deviceId, isOnView, automationView, buttonText, cal, device_type);
                             devices.add(suspendendDevice);
-                            Log.d("expiration_new_format: " , expiration);
                         }
                         else{ //Automation active
                             automationView = R.drawable.radio_green;
                             buttonText = "Suspend";
-                            Device automatedDevice = new AutomatedDevice(deviceId, isOnView, automationView, buttonText);
+                            Device automatedDevice = new AutomatedDevice(deviceId, isOnView, automationView, buttonText, device_type);
                             devices.add(automatedDevice);
                         }
                     }

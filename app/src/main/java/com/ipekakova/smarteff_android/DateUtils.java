@@ -6,6 +6,7 @@ package com.ipekakova.smarteff_android;
 
 
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,14 +40,14 @@ public class DateUtils {
 
     public static String getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_13);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        //dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date today = Calendar.getInstance().getTime();
         return dateFormat.format(today);
     }
 
     public static String getCurrentTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_13);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        //dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date today = Calendar.getInstance().getTime();
         return dateFormat.format(today);
     }
@@ -71,10 +72,11 @@ public class DateUtils {
     public static Calendar getCalendarFromDateTime(String mDateTime)
             throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_13, Locale.ENGLISH);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date date = dateFormat.parse(mDateTime);
+        Log.d("Date-day: ", String.valueOf(date.getDay()));
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
+        Log.d("DateUtils", cal.getTime().toString());
         return cal;
     }
 
@@ -121,5 +123,11 @@ public class DateUtils {
         mParsedDate = mInputDateFormat.parse(inputDate);
         mOutputDateString = mOutputDateFormat.format(mParsedDate);
         return mOutputDateString;
+    }
+    public static String getStringFromDate(Date inputDate, String outputDateFormat){
+        SimpleDateFormat my_outputDateFormat = new SimpleDateFormat(outputDateFormat, Locale.ENGLISH);
+        String outputString = my_outputDateFormat.format(inputDate);
+        return outputString;
+
     }
 }
