@@ -1,5 +1,7 @@
 package com.ipekakova.smarteff_android.Models;
 
+import com.ipekakova.smarteff_android.DateUtils;
+
 import java.util.Calendar;
 
 /**
@@ -8,10 +10,6 @@ import java.util.Calendar;
 
 public class SuspendendDevice extends Device {
 
-    public String expirationDay;
-    public String expirationMonth;
-    public String expirationYear;
-    public String expirationTime;
     public String expiration;
     public int day;
     public int month;
@@ -21,10 +19,10 @@ public class SuspendendDevice extends Device {
     public int second;
     private Calendar calendar;
 
-    public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,Calendar calendar, String expiration) {
-        super(id, isOn, automation, suspendOrEnable);
+    public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,Calendar calendar, String deviceType) {
+        super(id, isOn, automation, suspendOrEnable, deviceType);
         this.calendar = calendar;
-        this.expiration = expiration;
+        //this.expiration = expiration;
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -33,15 +31,16 @@ public class SuspendendDevice extends Device {
         second = calendar.get(Calendar.SECOND);
     }
 
-    public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,int day, int month, int year) {
-        super(id, isOn, automation, suspendOrEnable);
+    public SuspendendDevice(int id, int isOn, int automation, String suspendOrEnable,int day, int month, int year, String deviceType) {
+        super(id, isOn, automation, suspendOrEnable,deviceType );
         this.day = day;
         this.month = month;
         this.year = year;
     }
 
     public String getExpiration() {
-        return expiration;
+        DateUtils dateUtils = new DateUtils();
+        return dateUtils.getStringFromDate(calendar.getTime(), "EEE, dd MMM HH:mm");
     }
 
 
@@ -56,7 +55,8 @@ public class SuspendendDevice extends Device {
                 ", deviceIsOn=" + deviceIsOn +
                 ", automation=" + automation +
                 ", suspendOrEnable='" + suspendOrEnable +
-                "expiration='" + expiration + '\'' +
+                ", expiration='" + expiration + '\'' +
+                ", device_type='" + super.getDeviceType() + '\'' +
                 '}';
     }
 }

@@ -7,8 +7,8 @@ package com.ipekakova.smarteff_android.Models;
 public class AutomatedDevice extends Device {
 
 
-    public AutomatedDevice(int id, int isOn, int automation, String suspendOrEnable) {
-        super(id, isOn, automation, suspendOrEnable);
+    public AutomatedDevice(int id, int isOn, int automation, String suspendOrEnable, String deviceType) {
+        super(id, isOn, automation, suspendOrEnable, deviceType);
     }
     public String toString() {
         return "AutomatedDevice{" +
@@ -16,6 +16,7 @@ public class AutomatedDevice extends Device {
                 ", deviceIsOn=" + deviceIsOn +
                 ", automation=" + automation +
                 ", suspendOrEnable='" + suspendOrEnable + '\'' +
+                ", device_type='" + super.getDeviceType() + '\'' +
                 '}';
     }
 }

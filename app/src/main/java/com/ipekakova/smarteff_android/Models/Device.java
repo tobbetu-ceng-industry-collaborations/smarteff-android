@@ -10,15 +10,17 @@ public abstract class Device {
     public int deviceIsOn;
     public int automation;
     public String suspendOrEnable;
+    private String device_type;
     //private boolean enableShutDown;
 
 
-    public Device(int id, int isOn, int automation, String suspendOrEnable) {
+    public Device(int id, int isOn, int automation, String suspendOrEnable, String device_type) {
         this.id = id;
         this.deviceIsOn = isOn;
         this.automation = automation;
         //this.enableShutDown = enableShutDown;
         this.suspendOrEnable = suspendOrEnable;
+        this.device_type = device_type;
     }
 
     public String getDeviceName(){ return deviceName; }
@@ -32,6 +34,10 @@ public abstract class Device {
         return automation;
     }
     public  String getSuspendOrEnable(){ return suspendOrEnable; }
+    public String getDeviceType(){
+        return device_type;
+    }
+
 
     public void setDeviceName(String deviceName){
         deviceName = this.deviceName;
@@ -49,10 +55,12 @@ public abstract class Device {
     @Override
     public String toString() {
         return "Device{" +
-                "id=" + id +
+                "deviceName='" + deviceName + '\'' +
+                ", id=" + id +
                 ", deviceIsOn=" + deviceIsOn +
                 ", automation=" + automation +
                 ", suspendOrEnable='" + suspendOrEnable + '\'' +
+                ", device_type='" + device_type + '\'' +
                 '}';
     }
 }
