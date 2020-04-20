@@ -64,6 +64,7 @@ public class ScheduledDeviceAdapter extends RecyclerView.Adapter<ScheduledDevice
 
         @Bind(R.id.sch_device_name) TextView device_name_tv;
         @Bind(R.id.sch_status) ImageView sch_status_iv;
+        @Bind(R.id.sch_device_type) ImageView sch_device_type_iv;
         @Bind(R.id.sch_time) TextView sch_time_tv;
         private Context mContext;
         private String TAG = "FormatDevices";
@@ -75,9 +76,18 @@ public class ScheduledDeviceAdapter extends RecyclerView.Adapter<ScheduledDevice
         }
 
         public void bindDevice(SuspendendDevice sch_device) {
-            device_name_tv.setText("Device:"+sch_device.getId());
+            device_name_tv.setText("D: "+sch_device.getId());
             sch_status_iv.setImageResource(sch_device.getStatus());
             sch_time_tv.setText(sch_device.getExpiration());
+            String type = sch_device.getDeviceType();
+            if (type.equals("Lamp")){
+                sch_device_type_iv.setImageResource(R.drawable.ic_light);
+            }
+            else if(type.equals("Air Conditioner")){
+                sch_device_type_iv.setImageResource(R.drawable.ic_airconditioner);
+            }else if(type.equals("Desk")){
+                sch_device_type_iv.setImageResource(R.drawable.ic_workstation);
+            }
 
         }
 

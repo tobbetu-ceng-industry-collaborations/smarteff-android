@@ -13,6 +13,11 @@
         android:layout_height="wrap_content"
         android:text="Devices"
         android:layout_weight="0.25"/>
+    <ImageView
+        android:id="@+id/device_type"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/device_name"/>
 
     <ImageView
         android:id="@+id/status"

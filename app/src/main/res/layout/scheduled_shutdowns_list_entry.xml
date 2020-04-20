@@ -17,10 +17,17 @@
         />
 
     <ImageView
-        android:id="@+id/sch_status"
+        android:id="@+id/sch_device_type"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_below="@+id/sch_device_name"/>
+
+    <ImageView
+        android:id="@+id/sch_status"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/sch_device_type"/>
+
 
     <TextView
         android:id="@+id/sch_time"

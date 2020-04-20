@@ -105,6 +105,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     public class DeviceViewHolder extends RecyclerView.ViewHolder{
 
         @Bind(R.id.device_name) TextView deviceName;
+        @Bind(R.id.device_type) ImageView deviceType;
         @Bind(R.id.status) ImageView status;
         @Bind(R.id.automation) ImageView automation;
         //Switch enableShutDown;
@@ -128,10 +129,22 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         public void bindDevice(Device device) {
 
-            deviceName.setText("Device:" + device.getId());
+            deviceName.setText("D:" + device.getId());
             status.setImageResource(device.getStatus());
             automation.setImageResource(device.getAutomation());
             button.setText(device.getSuspendOrEnable());
+            String type = device.getDeviceType();
+            if (type.equals("Lamp")){
+                deviceType.setImageResource(R.drawable.ic_light);
+            }
+            else if(type.equals("Air Conditioner")){
+                deviceType.setImageResource(R.drawable.ic_airconditioner);
+            }else if(type.equals("Desk")){
+                deviceType.setImageResource(R.drawable.ic_workstation);
+            }else{
+                deviceType.setImageResource(R.drawable.ic_laptop);
+
+            }
         }
     }
 
