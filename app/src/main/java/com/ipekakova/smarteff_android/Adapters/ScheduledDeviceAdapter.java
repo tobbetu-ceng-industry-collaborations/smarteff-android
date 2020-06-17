@@ -90,6 +90,5 @@ public class ScheduledDeviceAdapter extends RecyclerView.Adapter<ScheduledDevice
             }
 
         }
-
     }
 }
