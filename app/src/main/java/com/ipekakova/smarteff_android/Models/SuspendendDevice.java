@@ -43,6 +43,9 @@ public class SuspendendDevice extends Device {
         return dateUtils.getStringFromDate(calendar.getTime(), "EEE, dd MMM HH:mm");
     }
 
+    public void setExpiration(String expiration) {
+        this.expiration = expiration;
+    }
 
     public Calendar getCalendar() {
         return calendar;

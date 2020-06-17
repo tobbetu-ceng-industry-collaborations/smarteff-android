@@ -20,17 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.ShowDevicesActivity"
+        <activity android:name=".UI.MainDevicesActivity"
             />
         <activity android:name=".UI.ShowNotificationActivity"
             android:label="SamertEff Notification"
             android:theme="@style/Theme.AppCompat.Dialog"
             />
-
-        <activity
-            android:name=".UI.ScheduledShutdownsActivity"
-            android:label="@string/title_activity_scheduled_shutdowns"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service
             android:name=".Services.UpdateDevicesService"

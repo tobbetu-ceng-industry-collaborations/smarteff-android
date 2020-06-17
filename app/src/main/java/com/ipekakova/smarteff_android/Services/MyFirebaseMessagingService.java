@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ipekakova.smarteff_android.R;
 import com.ipekakova.smarteff_android.UI.*;
@@ -70,7 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String messageBody) {
         Log.i( "sendNotification: " , messageBody);
 
-        Intent intent = new Intent(this, ShowDevicesActivity.class);
+        Intent intent = new Intent(this, ShowDevicesFragment.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -79,7 +77,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "channel_id")
                 .setContentTitle("FCM Message")
                 .setContentText(messageBody)
-                .setSmallIcon(R.drawable.suspend)
+                .setSmallIcon(R.drawable.automated)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

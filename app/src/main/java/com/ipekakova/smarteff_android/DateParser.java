@@ -13,7 +13,7 @@ public class DateParser{
 
     private int year, month, day, hour, minute, second;
     private Date date= null;
-    private Calendar calendar = Calendar.getInstance();;
+    private Calendar calendar = Calendar.getInstance();
 
     public DateParser(String until){
         String [] dates = until.split("-");

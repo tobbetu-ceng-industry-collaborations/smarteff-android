@@ -37,6 +37,8 @@ public abstract class Device {
     public String getDeviceType(){
         return device_type;
     }
+    public abstract String getExpiration();
+    public abstract void setExpiration(String expiration);
 
 
     public void setDeviceName(String deviceName){
@@ -63,4 +65,5 @@ public abstract class Device {
                 ", device_type='" + device_type + '\'' +
                 '}';
     }
+
 }

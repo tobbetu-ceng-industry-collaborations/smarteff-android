@@ -5,13 +5,15 @@
         <item
             android:id="@+id/nav_devices"
             android:icon="@drawable/laptop"
-            android:title="Devices" />
+            android:title="All Devices" />
         <item
             android:id="@+id/nav_suspensions"
-            android:icon="@drawable/suspend"
-            android:title="Shutdowns" />
-
+            android:icon="@drawable/suspendend"
+            android:title="Suspendend Shutdowns" />
+        <item
+            android:id="@+id/nav_automations"
+            android:icon="@drawable/automated"
+            android:title="Automated Shutdowns" />
     </group>
-
 
 </menu>

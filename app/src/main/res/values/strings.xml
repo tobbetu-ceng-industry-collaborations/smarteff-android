@@ -4,7 +4,7 @@
     <string name="get_devices_url">https://smarteff.herokuapp.com/ListDevices</string>
     <string name="enable_automation_url">https://smarteff.herokuapp.com/EnableAutomation</string>
     <string name="suspend_automation_url">https://smarteff.herokuapp.com/SuspendAutomation</string>
-    <string name="get_scheduled_shutdowns">https://smarteff.herokuapp.com/ListScheduledShutdowns/</string>
+    <string name="get_scheduled_shutdowns">https://smarteff.herokuapp.com/ListScheduledShutdowns</string>
     <string name="title_activity_scheduled_shutdowns">ScheduledShutdownsActivity</string>
     <string name="enable_automation_url_emulator">http://10.0.2.2:5000/EnableAutomation</string>
     <string name="suspend_automation_url_emulator">http://10.0.2.2:5000/SuspendAutomation</string>

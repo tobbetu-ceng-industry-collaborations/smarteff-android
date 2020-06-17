@@ -52,7 +52,8 @@ public class HttpGetAsyncTask extends AsyncTask{
             StringBuilder stringBuilder = new StringBuilder();
             //Check if the line we are reading is not null
             while((inputLine = reader.readLine()) != null){
-                stringBuilder.append(inputLine).append("\n");            }
+                stringBuilder.append(inputLine).append("\n");
+            }
             //Close our InputStream and Buffered reader
             reader.close();
             streamReader.close();

@@ -57,6 +57,14 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 '}';
     }
+    public Device getDeviceFromId(int id){
+        for (int i =0; i< devices.size(); i++){
+            if ( devices.get(i).getId() == id){
+                return devices.get(i);
+            }
+        }
+        return null;
+    }
 
     //Make singleton from serialize and deserialize operation.
     protected Object readResolve() {
