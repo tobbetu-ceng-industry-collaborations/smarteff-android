@@ -145,11 +145,11 @@ public class MainActivity extends AppCompatActivity {
     //Listener for Login Button
     public void loginListener(View view) {
         //Toast.makeText(getApplicationContext(),"Login Deneme",Toast.LENGTH_LONG).show();
-        Intent loginIntent = new Intent(getApplicationContext(), ShowDevicesActivity.class);
+        Intent loginIntent = new Intent(getApplicationContext(), MainDevicesActivity.class);
         startActivity(loginIntent);
     }
     public void goToDevicesActivity(){
-        Intent i = new Intent(this,ShowDevicesActivity.class);
+        Intent i = new Intent(this,MainDevicesActivity.class);
         startActivity(i);
     }
 }

@@ -22,11 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by User on 11.03.2020.
@@ -85,7 +80,7 @@ public class ShowNotificationActivity extends AppCompatActivity implements View.
             Log.e(TAG,"Suspendend.");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             // 2. Chain together various setter methods to set the dialog characteristics
-            builder.setTitle("Select a time for suspend your shutdown:");
+            builder.setTitle("How long would you like to postpone automatic shutdown?");
                     builder.setSingleChoiceItems(R.array.suspend_hour_options, -1 ,new DialogInterface.OnClickListener() {
                         int[] hours = getResources().getIntArray(R.array.hours);
                         @Override
@@ -111,9 +106,9 @@ public class ShowNotificationActivity extends AppCompatActivity implements View.
                     }
 
                     new HttpPostAsyncTask(new WeakReference<Context>(getApplicationContext()),"json", jsonObject).execute(getString(R.string.suspend_automation_url));
-                    Intent backToDevices = new Intent(getApplicationContext(), ShowDevicesActivity.class);
-                    startActivity(backToDevices);
                     finish();
+                    Intent backToDevices = new Intent(getApplicationContext(), MainDevicesActivity.class);
+                    startActivity(backToDevices);
                 }
             });
             builder.show();
